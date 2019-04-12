@@ -1,0 +1,109 @@
+def build_config = [:]
+build_config.version_code = 1
+build_config.version_name = '1.0.0'
+build_config.compile_sdk = 28
+build_config.min_sdk = 21
+build_config.target_sdk = 28
+// for example
+build_config.example = [:]
+build_config.example.application_id = 'jp.co.ks_rogers.animationswwitchingbottomnavigation.example'
+build_config.example.version_code = 1
+build_config.example.version_name = '1.0.0'
+build_config.example.compile_sdk = 28
+build_config.example.min_sdk = 21
+build_config.example.target_sdk = 28
+ext.build_config = build_config
+
+def versions = [:]
+// base
+versions.kotlin = '1.3.11'
+versions.gradle = '3.4.0-beta03'
+versions.dependencies = '0.20.0'
+// google
+versions.app_compat = '1.1.0-alpha02'
+versions.constraint_layout = '2.0.0-alpha3'
+versions.lifecycle = '2.1.0-alpha01'
+versions.core = '1.1.0-alpha03'
+versions.activity = '1.0.0-alpha03'
+versions.fragment = '1.1.0-alpha03'
+versions.ktx = '1.0.1'
+versions.material = '1.1.0-alpha03'
+versions.navigation = '1.0.0-alpha08'
+versions.browser = '1.0.0'
+versions.test = '1.0.0'
+// debug
+versions.hyperion = '0.9.24'
+versions.timber = '4.7.1'
+// ci
+versions.ktlint = '0.29.0'
+versions.jacoco = '0.8.1'
+// test
+versions.runner = '1.1.0'
+versions.androidx_junit = '1.0.0'
+versions.truth = '1.0.0'
+versions.espresso = '3.1.0'
+versions.robolectric = '4.0.2'
+versions.mockk = '1.8.13.kotlin13'
+versions.byte_buddy = '1.9.4'
+versions.mock_web_server = '3.11.0'
+ext.versions = versions
+
+def deps = [:]
+
+def kotlin = [:]
+kotlin.jdk = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+kotlin.coroutines = [:]
+kotlin.coroutines.core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlin_coroutines"
+kotlin.coroutines.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutines"
+deps.kotlin = kotlin
+
+def androidx = [:]
+androidx.app_compat = "androidx.appcompat:appcompat:$versions.app_compat"
+androidx.constraintLayout = "androidx.constraintlayout:constraintlayout:$versions.constraint_layout"
+androidx.lifecycle = [:]
+androidx.lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime:$versions.lifecycle"
+androidx.lifecycle.compiler = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle"
+androidx.lifecycle.extension = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+androidx.lifecycle.reactivestreams = "androidx.lifecycle:lifecycle-reactivestreams:$versions.lifecycle"
+androidx.navigation = [:]
+androidx.navigation.fragment = "android.arch.navigation:navigation-fragment:$versions.navigation"
+androidx.navigation.fragment_ltx = "android.arch.navigation:navigation-fragment-ktx:$versions.navigation"
+androidx.navigation.ui = "android.arch.navigation:navigation-ui:$versions.navigation"
+androidx.navigation.ui_ktx = "android.arch.navigation:navigation-ui-ktx:$versions.navigation"
+androidx.browser = "androidx.browser:browser:$versions.browser"
+androidx.core_ktx = "androidx.core:core-ktx:$versions.core"
+androidx.activity_ktx = "androidx.activity:activity-ktx:$versions.activity"
+androidx.fragment_ktx = "androidx.fragment:fragment-ktx:$versions.fragment"
+androidx.test = [:]
+androidx.test.core = "androidx.test:core:$versions.test"
+androidx.test.runner = "androidx.test:runner:$versions.runner"
+androidx.test.junit = "androidx.test.ext:junit:$versions.androidx_junit"
+androidx.test.truth = "androidx.test.ext:truth:$versions.truth"
+androidx.test.espresso_core = "androidx.test.espresso:espresso-core:$versions.espresso"
+androidx.test.espresso_intents = "androidx.test.espresso:espresso-core:$versions.espresso"
+deps.androidx = androidx
+
+def google = [:]
+google.material = "com.google.android.material:material:$versions.material"
+deps.google = google
+
+def jakewharton = [:]
+jakewharton.timber = "com.jakewharton.timber:timber:$versions.timber"
+deps.jakewharton = jakewharton
+
+deps.robolectric = "org.robolectric:robolectric:$versions.robolectric"
+deps.mockk = "io.mockk:mockk:$versions.mockk"
+deps.byte_buddy_agent = "net.bytebuddy:byte-buddy-agent:$versions.byte_buddy"
+
+def hyperion = [:]
+hyperion.core = "com.willowtreeapps.hyperion:hyperion-core:$versions.hyperion"
+hyperion.attr = "com.willowtreeapps.hyperion:hyperion-attr:$versions.hyperion"
+hyperion.measurement = "com.willowtreeapps.hyperion:hyperion-measurement:$versions.hyperion"
+hyperion.disk = "com.willowtreeapps.hyperion:hyperion-disk:$versions.hyperion"
+hyperion.crash = "com.willowtreeapps.hyperion:hyperion-crash:$versions.hyperion"
+hyperion.shared_preference = "com.willowtreeapps.hyperion:hyperion-shared-preferences:$versions.hyperion"
+hyperion.geiger_counter = "com.willowtreeapps.hyperion:hyperion-geiger-counter:$versions.hyperion"
+hyperion.release = "com.willowtreeapps.hyperion:hyperion-core-no-op:$versions.hyperion"
+deps.hyperion = hyperion
+
+ext.deps = deps

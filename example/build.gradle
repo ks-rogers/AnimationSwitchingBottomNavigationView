@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+apply from: '../gradle/ktlint.gradle'
+
+android {
+  compileSdkVersion build_config.example.compile_sdk
+  defaultConfig {
+    applicationId build_config.example.application_id
+    minSdkVersion build_config.example.min_sdk
+    targetSdkVersion build_config.example.target_sdk
+    versionCode build_config.example.version_code
+    versionName build_config.example.version_name
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+}
+
+dependencies {
+  implementation deps.kotlin.jdk
+
+  implementation deps.androidx.app_compat
+  implementation deps.androidx.constraintLayout
+  implementation deps.androidx.core_ktx
+}
+
+// For Debugging
+dependencies {
+  debugImplementation deps.hyperion.core
+  debugImplementation deps.hyperion.attr
+  debugImplementation deps.hyperion.measurement
+  debugImplementation deps.hyperion.disk
+  debugImplementation deps.hyperion.crash
+  debugImplementation deps.hyperion.shared_preference
+  debugImplementation deps.hyperion.geiger_counter
+  releaseImplementation deps.hyperion.release
+}
