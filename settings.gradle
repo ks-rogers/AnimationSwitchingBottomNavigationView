@@ -1,1 +1,1 @@
-include ':example', ':animationswitchingbottomnavigation'
+include ':example', ':library'

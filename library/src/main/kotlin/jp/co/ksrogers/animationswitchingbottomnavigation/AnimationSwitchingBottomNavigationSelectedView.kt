@@ -1,0 +1,4 @@
+package jp.co.ksrogers.animationswitchingbottomnavigation
+
+class AnimationSwitchingBottomNavigationSelectedView {
+}
