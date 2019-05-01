@@ -92,7 +92,7 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
     (0 until childCount).forEach {
       val child = getChildAt(it)
-      child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY), heightSpec)
+      child.measure(MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY), heightMeasureSpec)
     }
   }
 
@@ -116,7 +116,6 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   }
 
   private fun getNewSelectedItemPosition(newItem: MenuItem) {
-
   }
 
   interface OnMenuItemClickListener {

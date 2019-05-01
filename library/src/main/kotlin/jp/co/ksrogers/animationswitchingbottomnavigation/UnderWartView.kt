@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 
-
 /**
  * TODO 矩形の正確な描画は後回しです
  */

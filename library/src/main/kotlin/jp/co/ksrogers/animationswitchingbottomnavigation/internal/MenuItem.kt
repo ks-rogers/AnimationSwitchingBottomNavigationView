@@ -16,12 +16,12 @@ class MenuItem(
     const val NO_ICON = 0
 
     fun getSampleMenuItems(context: Context): List<MenuItem> = listOf(
-     MenuItem(
-       itemId = R.id.animation_switching_botttom_navigation_sample_id_1,
-       ordering = 0,
-       iconResId = R.drawable.ic_home_black_24dp_sample,
-       iconDrawable = context.resources.getDrawable(R.drawable.ic_home_black_24dp_sample, null)
-     ),
+      MenuItem(
+        itemId = R.id.animation_switching_botttom_navigation_sample_id_1,
+        ordering = 0,
+        iconResId = R.drawable.ic_home_black_24dp_sample,
+        iconDrawable = context.resources.getDrawable(R.drawable.ic_home_black_24dp_sample, null)
+      ),
       MenuItem(
         itemId = R.id.animation_switching_botttom_navigation_sample_id_2,
         ordering = 1,
