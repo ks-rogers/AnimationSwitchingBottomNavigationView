@@ -6,5 +6,10 @@
   </declare-styleable>
   <declare-styleable name="AnimationSwitchingBottomNavigationLayout">
     <attr name="buttonBackgroundColor" format="color"/>
+    <attr name="navigationViewHeight" format="dimension"/>
+    <attr name="selectedButtonSize" format="enum">
+      <enum name="normal" value="0"/>
+      <enum name="small" value="1"/>
+    </attr>
   </declare-styleable>
 </resources>

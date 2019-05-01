@@ -5,7 +5,8 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:buttonBackgroundColor="@android:color/white"
-  app:menuViewId="@id/view_animation_switching_bottom_navigation_item"
+  app:navigationViewHeight="?attr/actionBarSize"
+  app:selectedButtonSize="normal"
   >
   <LinearLayout
     android:orientation="vertical"
