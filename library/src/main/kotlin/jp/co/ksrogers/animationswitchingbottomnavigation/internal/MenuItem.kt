@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import jp.co.ksrogers.animationswitchingbottomnavigation.R
 
+/**
+ * 現状internalとして作っているが、XMLからMenuItemを渡すことは現実的ではないの
+ */
 class MenuItem(
   val itemId: Int,
   val ordering: Int,

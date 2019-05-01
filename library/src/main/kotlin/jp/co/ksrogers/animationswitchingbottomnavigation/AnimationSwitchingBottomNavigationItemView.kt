@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams
 import android.widget.FrameLayout
 import android.widget.ImageView
-import jp.co.ksrogers.animationswitchingbottomnavigation.ext.animatorAlpha
-import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setDurationExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
 
 class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
@@ -35,18 +33,6 @@ class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
   }
 
   fun setIcon(drawable: Drawable?) = icon.setImageDrawable(drawable)
-
-  fun fadeOutIcon() {
-    icon.animatorAlpha(1F, 0F)
-      .setDurationExt(100L)
-      .start()
-  }
-
-  fun fadeInIcon() {
-    icon.animatorAlpha(0F, 1F)
-      .setDurationExt(100L)
-      .start()
-  }
 
   fun setChecked(isChecked: Boolean) {
     itemData.setChecked(isChecked)

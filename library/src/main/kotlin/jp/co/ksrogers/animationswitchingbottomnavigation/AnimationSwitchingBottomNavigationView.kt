@@ -1,6 +1,5 @@
 package jp.co.ksrogers.animationswitchingbottomnavigation
 
-import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
@@ -15,9 +14,6 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   companion object {
     const val MENU_VIEW_INDEX = 0
     const val SELECTED_BACKGROUND_VIEW_INDEX = 1
-
-    const val ANIMATION_DURATION = 150L
-    const val ANIMATION_STARY_DELAY = 90L
   }
 
   val menuView: AnimationSwitchingBottomNavigationMenuView
@@ -25,8 +21,6 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
 
   private var selectedItemId: Int = 0
   private var selectedItemPosition: Int = 0
-
-  private var animator: Animator? = null
 
   /**
    * クリックされたときにアニメーションさせる
@@ -65,23 +59,43 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   }
 
   // TODO もしかするとUnderWartViewのサイズによっては位置調整のためにonLayoutをoverrideする必要があるかもしれない
+  // TODO 再度デザイン確認しにいったところセレクトの背景は各タブよりも横幅が大きいっぽいので、UnderWartView側で確定するようにしたほうが良いかも
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    val width = MeasureSpec.getSize(widthMeasureSpec)
+    val height = MeasureSpec.getSize(heightMeasureSpec)
 
     // UnderWartViewのサイズを決定する
     val menuView = getChildAt(MENU_VIEW_INDEX) as AnimationSwitchingBottomNavigationMenuView
     // TODO 2019/05/01 追加 これを追加しないとMenuViewのサイズがなくなってしまう
     menuView.measure(
-      MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-      MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+      MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+      MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
     )
 
-    val underWartWidth = menuView.getChildAt(0).measuredWidth
+//    val underWartWidth = menuView.getChildAt(0).measuredWidth
     val underWartHeight = menuView.measuredHeight
     getChildAt(SELECTED_BACKGROUND_VIEW_INDEX).measure(
-      MeasureSpec.makeMeasureSpec(underWartWidth, MeasureSpec.EXACTLY),
+      MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
       MeasureSpec.makeMeasureSpec(underWartHeight, MeasureSpec.EXACTLY)
+    )
+
+    setMeasuredDimension(width, height)
+  }
+
+  // TODO UnderWartViewがタブとサイズが違ってくるので、UnderWartViewの中心がItemViewの中心になるようにlayoutする
+  override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    super.onLayout(changed, left, top, right, bottom)
+    // SelectedButtonの位置を確定
+    val underWartWidth = underWartView.measuredWidth
+    val underWartHeight = underWartView.measuredHeight
+    val itemViewWidth = menuView.itemViews[0].measuredWidth
+    val differenceBetweeenUnderWartAndItem = (itemViewWidth - underWartWidth) / 2
+    underWartView.layout(
+      differenceBetweeenUnderWartAndItem,
+      measuredHeight - underWartHeight,
+      differenceBetweeenUnderWartAndItem + underWartWidth,
+      measuredHeight
     )
   }
 
