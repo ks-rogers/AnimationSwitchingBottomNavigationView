@@ -102,9 +102,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private var navigationViewHeight =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
   private var selectedWidth =
-    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_width)
+    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
   private var selectedHeight =
-    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_height)
+    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
   private var selectedBottomMargin =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_bottom_margin)
 
@@ -134,9 +134,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       when (selectedButtonSize) {
         NORMAL -> {
           selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_width)
+            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
           selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_height)
+            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
         }
         SMALL -> {
           selectedWidth =

@@ -32,9 +32,9 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
   private val underWartPath = Path()
 
   private var selectedWidth =
-    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_width)
+    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
   private var selectedHeight =
-    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_height)
+    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
 
   init {
     attrs?.let {
@@ -52,9 +52,9 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
       when (selectedButtonSize) {
         NORMAL -> {
           selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_width)
+            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
           selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_height)
+            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
         }
         SMALL -> {
           selectedWidth =
