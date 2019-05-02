@@ -12,6 +12,7 @@ android {
     targetSdkVersion build_config.example.target_sdk
     versionCode build_config.example.version_code
     versionName build_config.example.version_name
+    multiDexEnabled true
   }
 
   buildTypes {
@@ -27,6 +28,8 @@ android {
 }
 
 dependencies {
+  implementation project(':library')
+
   implementation deps.kotlin.jdk
 
   implementation deps.androidx.app_compat
