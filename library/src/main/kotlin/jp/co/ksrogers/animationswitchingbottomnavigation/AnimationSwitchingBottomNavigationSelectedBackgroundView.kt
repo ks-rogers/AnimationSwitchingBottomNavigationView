@@ -16,7 +16,7 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
  * TODO 矩形の正確な描画は後回しです
  */
 @SuppressLint("CustomViewStyleable")
-class UnderWartView @JvmOverloads constructor(
+class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null
 ) : View(context, attrs) {

@@ -61,7 +61,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         val menuView = navigationView.menuView
         val fromItemView = menuView.itemViews[selectedItemPosition]
         val toItemView = menuView.itemViews[newPosition]
-        val underwartView = navigationView.underWartView
+        val selectedBackgroundView = navigationView.selectedBackgroundView
 
         if (animator?.isRunning != false) {
           animator?.cancel()
@@ -76,7 +76,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
           ),
           AnimatorSet().playTogetherExt(
             createAnimatorMoveToSelectedPosition(selectedButton, menuView, newPosition),
-            createAnimatorMoveToSelectedBackgroundPosition(underwartView, menuView, newPosition)
+            createAnimatorMoveToSelectedBackgroundPosition(selectedBackgroundView, menuView, newPosition)
           )
         ).setListener(
           onCancel = {
@@ -109,10 +109,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_bottom_margin)
 
   private var buttonBackgroundColor: ColorStateList? = null
-
-  private var selectedItemId: Int = 0
   private var selectedItemPosition: Int = 0
-
   private var animator: Animator? = null
 
   init {
@@ -210,11 +207,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     val selectedWidth = selectedButton.measuredWidth
     val selectedHeight = selectedButton.measuredHeight
     val itemViewWidth = navigationView.menuView.itemViews[0].measuredWidth
-    val differenceBetweeensselectedAndItem = (itemViewWidth - selectedWidth) / 2
+    val differenceBetweeenSelectedAndItem = (itemViewWidth - selectedWidth) / 2
     selectedButton.layout(
-      differenceBetweeensselectedAndItem,
+      differenceBetweeenSelectedAndItem,
       measuredHeight - selectedHeight - selectedBottomMargin,
-      differenceBetweeensselectedAndItem + selectedWidth,
+      differenceBetweeenSelectedAndItem + selectedWidth,
       measuredHeight - selectedBottomMargin
     )
   }
@@ -238,7 +235,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
-    // animate underWartView
+    // animate animationSwitchingBottomNavigationSelectedButtonView
     val selectedButtonWidth = selectedButton.measuredWidth
     val itemViewWidth = menuView.itemViews[newPosition].measuredWidth
     val startX = selectedButton.x
@@ -250,17 +247,17 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   }
 
   fun createAnimatorMoveToSelectedBackgroundPosition(
-    underWartView: UnderWartView,
+    selectedBackground: AnimationSwitchingBottomNavigationSelectedBackgroundView,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
-    // animate underWartView
-    val underWartWidth = navigationView.underWartView.measuredWidth
+    // animate selectedBackground
+    val selectedBackgroundWidth = navigationView.selectedBackgroundView.measuredWidth
     val itemViewWidth = menuView.itemViews[newPosition].measuredWidth
-    val startX = underWartView.x
-    val targetX = menuView.itemViews[newPosition].x + (itemViewWidth - underWartWidth) / 2
+    val startX = selectedBackground.x
+    val targetX = menuView.itemViews[newPosition].x + (itemViewWidth - selectedBackgroundWidth) / 2
 
-    return underWartView.animatorX(startX, targetX)
+    return selectedBackground.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
   }
 

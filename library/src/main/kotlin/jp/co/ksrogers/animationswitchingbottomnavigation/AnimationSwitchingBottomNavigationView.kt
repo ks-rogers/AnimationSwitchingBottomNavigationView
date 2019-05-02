@@ -12,7 +12,7 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs) {
 
   val menuView: AnimationSwitchingBottomNavigationMenuView
-  val underWartView: UnderWartView
+  val selectedBackgroundView: AnimationSwitchingBottomNavigationSelectedBackgroundView
 
   private var selectedItemId: Int = 0
   private var selectedItemPosition: Int = 0
@@ -41,14 +41,14 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
       this.onMenuItemClickListener =
         this@AnimationSwitchingBottomNavigationView.onMenuItemClickListener
     }
-    underWartView = UnderWartView(context)
+    selectedBackgroundView = AnimationSwitchingBottomNavigationSelectedBackgroundView(context)
 
     val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
     menuView.layoutParams = params
 
     addView(menuView, params)
     addView(
-      underWartView,
+      selectedBackgroundView,
       LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP)
     )
   }
@@ -57,16 +57,17 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     val width = MeasureSpec.getSize(widthMeasureSpec)
     val height = MeasureSpec.getSize(heightMeasureSpec)
 
-    // UnderWartViewのサイズを決定する
+    // MenuViewのサイズを決定する
     menuView.measure(
       MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
       MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
     )
 
-    val underWartHeight = menuView.measuredHeight
-    underWartView.measure(
+    // SelectedBackgroundViewのサイズを決定する
+    val selectedBackgroundHeight = menuView.measuredHeight
+    selectedBackgroundView.measure(
       MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-      MeasureSpec.makeMeasureSpec(underWartHeight, MeasureSpec.EXACTLY)
+      MeasureSpec.makeMeasureSpec(selectedBackgroundHeight, MeasureSpec.EXACTLY)
     )
 
     setMeasuredDimension(width, height)
@@ -75,14 +76,14 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
     // SelectedBackgroundViewの位置を確定
-    val underWartWidth = underWartView.measuredWidth
-    val underWartHeight = underWartView.measuredHeight
+    val selectedBackgroundWidth = selectedBackgroundView.measuredWidth
+    val selectedBackgroundHeight = selectedBackgroundView.measuredHeight
     val itemViewWidth = menuView.itemViews[0].measuredWidth
-    val differenceBetweeenUnderWartAndItem = (itemViewWidth - underWartWidth) / 2
-    underWartView.layout(
-      differenceBetweeenUnderWartAndItem,
-      measuredHeight - underWartHeight,
-      differenceBetweeenUnderWartAndItem + underWartWidth,
+    val differenceBetweeenSelectedBackgroundAndItem = (itemViewWidth - selectedBackgroundWidth) / 2
+    selectedBackgroundView.layout(
+      differenceBetweeenSelectedBackgroundAndItem,
+      measuredHeight - selectedBackgroundHeight,
+      differenceBetweeenSelectedBackgroundAndItem + selectedBackgroundWidth,
       measuredHeight
     )
   }
