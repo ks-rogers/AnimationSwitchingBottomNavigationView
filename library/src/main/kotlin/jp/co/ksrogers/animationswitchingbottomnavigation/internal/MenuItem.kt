@@ -13,7 +13,7 @@ class MenuItem(
   val ordering: Int,
   val iconResId: Int = NO_ICON,
   val iconDrawable: Drawable?,
-  var ischecked: Boolean = false
+  var isChecked: Boolean = false
 ) {
 
   companion object {
@@ -51,9 +51,5 @@ class MenuItem(
         iconDrawable = context.resources.getDrawable(R.drawable.ic_home_black_24dp_sample, null)
       )
     )
-  }
-
-  fun setChecked(ischecked: Boolean) {
-    this.ischecked = ischecked
   }
 }

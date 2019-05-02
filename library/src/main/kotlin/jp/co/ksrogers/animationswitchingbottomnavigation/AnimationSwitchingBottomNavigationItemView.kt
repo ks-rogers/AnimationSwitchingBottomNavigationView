@@ -32,9 +32,9 @@ class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
     setIcon(itemData.iconDrawable)
   }
 
-  fun setIcon(drawable: Drawable?) = icon.setImageDrawable(drawable)
+  private fun setIcon(drawable: Drawable?) = icon.setImageDrawable(drawable)
 
   fun setChecked(isChecked: Boolean) {
-    itemData.setChecked(isChecked)
+    itemData.isChecked = isChecked
   }
 }

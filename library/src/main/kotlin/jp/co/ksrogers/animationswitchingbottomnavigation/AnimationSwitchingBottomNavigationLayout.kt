@@ -148,7 +148,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       a.recycle()
     }
 
-    selectedButton.setBckgroundTintLisst(buttonBackgroundColor)
+    selectedButton.setBackgroundTintList(buttonBackgroundColor)
   }
 
   // 描画順序を考慮して、XMLのパースが終わった後にNavigationViewとSelectedButtonを追加する
@@ -178,8 +178,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     }
 
     // NavigationViewのサイズを確定
-    val navigationWidth = layoutWidth
-    val navigationWidthSpec = MeasureSpec.makeMeasureSpec(navigationWidth, MeasureSpec.AT_MOST)
+    val navigationWidthSpec = MeasureSpec.makeMeasureSpec(layoutWidth, MeasureSpec.AT_MOST)
     val navigationHeightSpec =
       MeasureSpec.makeMeasureSpec(navigationViewHeight, MeasureSpec.EXACTLY)
     navigationView.measure(navigationWidthSpec, navigationHeightSpec)
@@ -207,11 +206,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     val selectedWidth = selectedButton.measuredWidth
     val selectedHeight = selectedButton.measuredHeight
     val itemViewWidth = navigationView.menuView.itemViews[0].measuredWidth
-    val differenceBetweeenSelectedAndItem = (itemViewWidth - selectedWidth) / 2
+    val differenceBetweenSelectedAndItem = (itemViewWidth - selectedWidth) / 2
     selectedButton.layout(
-      differenceBetweeenSelectedAndItem,
+      differenceBetweenSelectedAndItem,
       measuredHeight - selectedHeight - selectedBottomMargin,
-      differenceBetweeenSelectedAndItem + selectedWidth,
+      differenceBetweenSelectedAndItem + selectedWidth,
       measuredHeight - selectedBottomMargin
     )
   }

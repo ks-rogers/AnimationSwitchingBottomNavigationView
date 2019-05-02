@@ -22,7 +22,7 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
 ) : View(context, attrs) {
 
   private val bottomMargin =
-    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_under_wart_bottom_margin)
+    resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_background_bottom_margin)
       .toFloat()
 
   // TODO 色が固定になっているので、変える

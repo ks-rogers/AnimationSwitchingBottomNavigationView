@@ -79,11 +79,11 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     val selectedBackgroundWidth = selectedBackgroundView.measuredWidth
     val selectedBackgroundHeight = selectedBackgroundView.measuredHeight
     val itemViewWidth = menuView.itemViews[0].measuredWidth
-    val differenceBetweeenSelectedBackgroundAndItem = (itemViewWidth - selectedBackgroundWidth) / 2
+    val differenceBetweenSelectedBackgroundAndItem = (itemViewWidth - selectedBackgroundWidth) / 2
     selectedBackgroundView.layout(
-      differenceBetweeenSelectedBackgroundAndItem,
+      differenceBetweenSelectedBackgroundAndItem,
       measuredHeight - selectedBackgroundHeight,
-      differenceBetweeenSelectedBackgroundAndItem + selectedBackgroundWidth,
+      differenceBetweenSelectedBackgroundAndItem + selectedBackgroundWidth,
       measuredHeight
     )
   }

@@ -7,5 +7,5 @@
   <dimen name="animation_switching_bottom_navigation_selected_small_width">48dp</dimen>
   <dimen name="animation_switching_bottom_navigation_selected_small_height">48dp</dimen>
   <dimen name="animation_switching_bottom_navigation_selected_default_bottom_margin">16dp</dimen>
-  <dimen name="animation_switching_bottom_navigation_under_wart_bottom_margin">8dp</dimen>
+  <dimen name="animation_switching_bottom_navigation_selected_background_bottom_margin">8dp</dimen>
 </resources>

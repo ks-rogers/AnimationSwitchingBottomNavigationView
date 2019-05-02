@@ -45,7 +45,7 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
     setOnClickListener(onClickListener)
   }
 
-  fun setBckgroundTintLisst(colorStateList: ColorStateList?) {
+  override fun setBackgroundTintList(colorStateList: ColorStateList?) {
     ovalDrawable?.setTintList(colorStateList)
   }
 }

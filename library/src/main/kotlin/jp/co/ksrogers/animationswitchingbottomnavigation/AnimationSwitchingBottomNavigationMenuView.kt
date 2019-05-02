@@ -12,9 +12,9 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
-  private val onClickListener = View.OnClickListener {
-    val newItemView = it as AnimationSwitchingBottomNavigationItemView
-    var newSelectedItemPosition: Int = 0
+  private val onClickListener = View.OnClickListener { v ->
+    val newItemView = v as AnimationSwitchingBottomNavigationItemView
+    var newSelectedItemPosition = 0
 
     // セレクトされたpositionを取得する
     run loop@{
@@ -26,15 +26,11 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
       }
     }
 
-    items[newSelectedItemPosition].takeIf { !it.ischecked }?.let {
-      it.setChecked(true)
-    }
+    items[newSelectedItemPosition].takeIf { !it.isChecked }?.isChecked = true
 
     onMenuItemClickListener?.onClick(this, newSelectedItemPosition)
 
-    items[selectedItemPosition].takeIf { it.ischecked }?.let {
-      it.setChecked(false)
-    }
+    items[selectedItemPosition].takeIf { it.isChecked }?.isChecked = false
     selectedItemPosition = newSelectedItemPosition
     selectedItemId = items[newSelectedItemPosition].itemId
   }
@@ -48,7 +44,6 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   private var childWidth: Int = 0
 
   init {
-
     buildMenuItems(items)
   }
 
