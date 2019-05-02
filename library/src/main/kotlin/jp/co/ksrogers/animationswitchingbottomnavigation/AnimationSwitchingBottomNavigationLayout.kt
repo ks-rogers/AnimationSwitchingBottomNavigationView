@@ -19,9 +19,8 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setStartDelayExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
 
 /**
- * TODO 最終的にライブラリとして開発者に提供されるLayout。
- * 内部的に {@link AnimationSwitchingBottomNavigationView}, {@link AnimationSwitchingBottomNavigationSelectedButton}を生成し、メインコンテンツと両立させる。
- * AnimationSwitchingBottomNavigationSelectedViewとAnimationSwitchingBottomNavigationViewの選択時の処理を同時にdispatchするため、このレイアウトを作成する。
+ * 最終的にライブラリとして開発者に提供されるLayout。
+ * 内部的に [AnimationSwitchingBottomNavigationView], [AnimationSwitchingBottomNavigationSelectedButton]を生成し、メインコンテンツと両立させる。
  *
  */
 class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
@@ -51,9 +50,6 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     const val SLIDE_ANIMATION_START_DELAY = 5L
     const val FADE_ANIMATION_DURATION = 100L
     const val FADE_ANIMATION_START_DELAY = 150L
-
-    // FIXME should delete
-    const val TAG_NAME = "NavLayout"
   }
 
   // NavigationViewでイベントが発火されたときに呼び出されるリスナー
@@ -74,8 +70,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
         animator = AnimatorSet().playTogetherExt(
           AnimatorSet().playSequentiallyExt(
-            createAnimatorFadeOutMenuItem(fromItemView, toItemView),
-            createAnimatorFadeInMenuItem(fromItemView, toItemView).setStartDelayExt(
+            createAnimatorFadeOutMenuItem(toItemView),
+            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(
               FADE_ANIMATION_START_DELAY)
           ),
           AnimatorSet().playTogetherExt(
@@ -224,18 +220,16 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   }
 
   fun createAnimatorFadeOutMenuItem(
-    fromItemView: AnimationSwitchingBottomNavigationItemView,
-    toItemView: AnimationSwitchingBottomNavigationItemView
+    itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
-    return toItemView.animatorAlpha(1F, 0F)
+    return itemView.animatorAlpha(1F, 0F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
   fun createAnimatorFadeInMenuItem(
-    fromItemView: AnimationSwitchingBottomNavigationItemView,
-    toItemView: AnimationSwitchingBottomNavigationItemView
+    itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
-    return fromItemView.animatorAlpha(0F, 1F)
+    return itemView.animatorAlpha(0F, 1F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
@@ -270,7 +264,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       .setDurationExt(SLIDE_ANIMATION_DURATION)
   }
 
-  // 以下、イメージしてるinterface
+  // TODO 以下、イメージしてるinterface
 //  interface OnNavigationItemReselectedListener {
 //    fun onNavigationItemReselected(@NonNull item: MenuItem): Boolean
 //  }

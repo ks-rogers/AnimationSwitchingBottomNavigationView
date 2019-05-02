@@ -12,8 +12,6 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
-  private val itemHeight: Int
-
   private val onClickListener = View.OnClickListener {
     val newItemView = it as AnimationSwitchingBottomNavigationItemView
     var newSelectedItemPosition: Int = 0
@@ -28,23 +26,20 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
       }
     }
 
-    // セレクトされたItemViewをfadeOutさせる
     items[newSelectedItemPosition].takeIf { !it.ischecked }?.let {
       it.setChecked(true)
-//      itemViews[newSelectedItemPosition].fadeOutIcon()
     }
 
     onMenuItemClickListener?.onClick(this, newSelectedItemPosition)
 
-    // セレクトが外れたItemViewをfadeInさせる
     items[selectedItemPosition].takeIf { it.ischecked }?.let {
       it.setChecked(false)
-//      itemViews[selectedItemPosition].fadeInIcon()
     }
     selectedItemPosition = newSelectedItemPosition
     selectedItemId = items[newSelectedItemPosition].itemId
   }
 
+  // TODO for sample
   var items = MenuItem.getSampleMenuItems(context)
   var onMenuItemClickListener: OnMenuItemClickListener? = null
   var itemViews = mutableListOf<AnimationSwitchingBottomNavigationItemView>()
@@ -52,14 +47,7 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   private var selectedItemPosition = 0
   private var childWidth: Int = 0
 
-  companion object {
-    const val MAX_ITEM_COUNT = 5
-  }
-
-  // TODO
   init {
-    itemHeight =
-      resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
 
     buildMenuItems(items)
   }
@@ -86,7 +74,6 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
     val width = MeasureSpec.getSize(widthMeasureSpec)
     val childCount = childCount
-    val heightSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY)
 
     childWidth = width / if (childCount == 0) 1 else childCount
 
@@ -113,9 +100,6 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
       used += child.measuredWidth
     }
-  }
-
-  private fun getNewSelectedItemPosition(newItem: MenuItem) {
   }
 
   interface OnMenuItemClickListener {

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- FIXME should delete for sample code -->
 <resources>
   <item name="animation_switching_botttom_navigation_sample_id_1" type="id"/>
   <item name="animation_switching_botttom_navigation_sample_id_2" type="id"/>

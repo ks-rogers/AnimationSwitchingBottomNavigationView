@@ -25,6 +25,7 @@ class UnderWartView @JvmOverloads constructor(
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_under_wart_bottom_margin)
       .toFloat()
 
+  // TODO 色が固定になっているので、変える
   private val colorRed = ContextCompat.getColor(context, R.color.red)
   private val paintRed = Paint().apply { color = colorRed }
 
@@ -81,12 +82,12 @@ class UnderWartView @JvmOverloads constructor(
     setMeasuredDimension(width, height)
   }
 
-  // TODO
+  // TODO 3次べエジェ曲線で描画しないときれいな曲線にならないことがわかったので、置き換える。数学解く必要あり
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
     val maxWidth = measuredWidth.toFloat()
     val figureHeight = measuredHeight - bottomMargin
-    val tan = 0F
+
     // スタート地点を移動
     underWartPath.moveTo(0F, 0F)
     // 左上から矩形の中心下までのベジェ曲線

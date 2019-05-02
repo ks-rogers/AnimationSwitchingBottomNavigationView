@@ -14,11 +14,11 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
   attrs: AttributeSet? = null
 ) : ImageButton(context, attrs) {
 
-  private lateinit var navigationView: AnimationSwitchingBottomNavigationView
   private var ovalDrawable: Drawable? = null
   private var buttonColor: ColorStateList? = null
   @IdRes private var menuViewId: Int = 0
 
+  // TODO for click check logging
   private val onClickListener = OnClickListener {
     Toast.makeText(context, "クリック", Toast.LENGTH_SHORT).show()
   }
@@ -44,31 +44,6 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
     background = ovalDrawable
     setOnClickListener(onClickListener)
   }
-
-//  /**
-//   * 自身のサイズを変更する場合
-//   */
-//  override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-//    super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-//
-//    // FIXME 一旦の実装
-//    // initの中ではまだViewTreeが構築されてないようで取得できない
-//    resolveBottomNavigationView(menuViewId)
-//  }
-//
-//  /**
-//   * 自身の位置を設定する
-//   */
-//  override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-//    super.onLayout(changed, left, top, right, bottom)
-//
-//    val itemWidth = navigationView.menuView.itemViews[0].measuredWidth
-//    val itemHeight = navigationView.menuView.itemViews[0].measuredHeight
-//  }
-//
-//  fun resolveBottomNavigationView(menuViewId: Int) {
-//   navigationView = (parent as ViewGroup).findViewById(menuViewId)
-//  }
 
   fun setBckgroundTintLisst(colorStateList: ColorStateList?) {
     ovalDrawable?.setTintList(colorStateList)
