@@ -148,7 +148,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       a.recycle()
     }
 
-    selectedButton.setBackgroundTintList(buttonBackgroundColor)
+    selectedButton.backgroundTintList = buttonBackgroundColor
   }
 
   // 描画順序を考慮して、XMLのパースが終わった後にNavigationViewとSelectedButtonを追加する

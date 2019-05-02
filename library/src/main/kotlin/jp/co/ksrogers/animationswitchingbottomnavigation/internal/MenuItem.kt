@@ -6,7 +6,7 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.R
 
 /**
  * TODO 現状internalとして作っているが、XMLからMenuItemを渡すことは現実的ではないので、外からMenuItemに該当するものを渡せるようにする必要がある
- * 一応メモがてら残しておきますが、[com.google.android.material.bottomnavigation.BottomNavigationView]の内部実装を追ったところ、menuをxmlで定義する方法は標準で提供されるMenuItemやMenuBuilderに依存していて拡張が非常に困難。
+ * 一応メモがてら残しておきますが、BottomNavigationViewの内部実装を追ったところ、menuをxmlで定義する方法は標準で提供されるMenuItemやMenuBuilderに依存していて拡張が非常に困難。
  */
 class MenuItem(
   val itemId: Int,

@@ -47,7 +47,7 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
     buildMenuItems(items)
   }
 
-  fun buildMenuItems(menus: List<MenuItem>) {
+  private fun buildMenuItems(menus: List<MenuItem>) {
     this.removeAllViews()
 
     if (itemViews.isNotEmpty()) itemViews.clear()
