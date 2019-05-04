@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
-import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenu
 
 class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   context: Context,
@@ -27,10 +27,10 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
         newPosition: Int
       ) {
 
-        val newItemData = menuView.itemViews[newPosition].itemData
-        onNavigationClickListener?.onClick(newItemData, newPosition)
+        val nextItem = menuView.itemViews[newPosition].navigationItem
+        onNavigationClickListener?.onClick(nextItem, newPosition)
         selectedItemPosition = newPosition
-        selectedItemId = newItemData.itemId
+        selectedItemId = nextItem.id
       }
     }
 
@@ -76,6 +76,8 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
     // SelectedBackgroundViewの位置を確定
+    if (menuView.childCount == 0) return
+
     val selectedBackgroundWidth = selectedBackgroundView.measuredWidth
     val selectedBackgroundHeight = selectedBackgroundView.measuredHeight
     val itemViewWidth = menuView.itemViews[0].measuredWidth
@@ -88,7 +90,11 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     )
   }
 
+  fun addNavigationMenu(menuList: List<NavigationMenu>) {
+    menuView.addNavigationItems(menuList)
+  }
+
   interface OnNavigationClickListener {
-    fun onClick(menuItem: MenuItem, newPosition: Int)
+    fun onClick(navigationItem: NavigationMenu, newPosition: Int)
   }
 }

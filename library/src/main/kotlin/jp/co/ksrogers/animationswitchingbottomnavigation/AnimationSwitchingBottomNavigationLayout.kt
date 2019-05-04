@@ -7,6 +7,8 @@ import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
+import androidx.annotation.DrawableRes
+import androidx.core.view.size
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.animatorAlpha
@@ -16,7 +18,6 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.ext.playTogetherExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setDurationExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setListener
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setStartDelayExt
-import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
 
 /**
  * 最終的にライブラリとして開発者に提供されるLayout。
@@ -44,6 +45,15 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     }
   }
 
+  /**
+   * 外部からセットするためのdata class
+   */
+  data class NavigationMenu(
+    val id: Int,
+    @DrawableRes val iconDrawableRes: Int,
+    val selectedBackgroundColor: Int
+  )
+
   companion object {
     const val MAX_CHILD_COUNT = 3
     const val SLIDE_ANIMATION_DURATION = 300L
@@ -55,7 +65,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   // NavigationViewでイベントが発火されたときに呼び出されるリスナー
   private val onNavigationClickListener =
     object : AnimationSwitchingBottomNavigationView.OnNavigationClickListener {
-      override fun onClick(menuItem: MenuItem, newPosition: Int) {
+      override fun onClick(navigationItem: NavigationMenu, newPosition: Int) {
         if (selectedItemPosition == newPosition) return
 
         val menuView = navigationView.menuView
@@ -111,6 +121,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private var buttonBackgroundColor: ColorStateList? = null
   private var selectedItemPosition: Int = 0
   private var animator: Animator? = null
+
+  /**
+   * 外部からセットする
+   */
+  private val navigationMenuList = mutableListOf<NavigationMenu>()
 
   init {
     attrs?.let {
@@ -203,6 +218,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
     // SelectedButtonの位置を確定
+    if (navigationView.menuView.itemViews.size == 0) return
+
     val selectedWidth = selectedButton.measuredWidth
     val selectedHeight = selectedButton.measuredHeight
     val itemViewWidth = navigationView.menuView.itemViews[0].measuredWidth
@@ -215,21 +232,21 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     )
   }
 
-  fun createAnimatorFadeOutMenuItem(
+  private fun createAnimatorFadeOutMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
     return itemView.animatorAlpha(1F, 0F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
-  fun createAnimatorFadeInMenuItem(
+  private fun createAnimatorFadeInMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
     return itemView.animatorAlpha(0F, 1F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
-  fun createAnimatorMoveToSelectedPosition(
+  private fun createAnimatorMoveToSelectedPosition(
     selectedButton: AnimationSwitchingBottomNavigationSelectedButton,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
@@ -245,7 +262,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       .setStartDelayExt(SLIDE_ANIMATION_START_DELAY)
   }
 
-  fun createAnimatorMoveToSelectedBackgroundPosition(
+  private fun createAnimatorMoveToSelectedBackgroundPosition(
     selectedBackground: AnimationSwitchingBottomNavigationSelectedBackgroundView,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
@@ -258,6 +275,20 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
     return selectedBackground.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
+  }
+
+  fun addNavigationMenu(menu: NavigationMenu) {
+    navigationMenuList.add(menu)
+    dispatchNavigationMenu()
+  }
+
+  fun addNavigationMenu(menuList: List<NavigationMenu>) {
+    navigationMenuList.addAll(menuList)
+    dispatchNavigationMenu()
+  }
+
+  private fun dispatchNavigationMenu() {
+    navigationView.addNavigationMenu(navigationMenuList)
   }
 
   // TODO 以下、イメージしてるinterface
