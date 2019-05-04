@@ -34,13 +34,11 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
     selectedItemPosition = newSelectedItemPosition
   }
 
-  // TODO for sample
   var onMenuItemClickListener: OnMenuItemClickListener? = null
   var itemViews = mutableListOf<AnimationSwitchingBottomNavigationItemView>()
   private var selectedItemPosition = 0
   private var childWidth: Int = 0
 
-  // TODO ここに追加します
   private var items = mutableListOf<NavigationMenuItem>()
 
   fun addNavigationItems(items: List<NavigationMenuItem>) {
