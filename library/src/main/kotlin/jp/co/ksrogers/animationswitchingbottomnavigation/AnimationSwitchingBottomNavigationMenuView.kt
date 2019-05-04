@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenu
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
 class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   context: Context,
@@ -18,8 +18,8 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
     // セレクトされたpositionを取得する
     run loop@{
-      itemViews.map { it.navigationItem }.forEachIndexed { index, item ->
-        if (item.id == newItemView.navigationItem.id) {
+      itemViews.map { it.item }.forEachIndexed { index, item ->
+        if (item.id == newItemView.item.id) {
           newSelectedItemPosition = index
           return@loop
         }
@@ -41,10 +41,10 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   private var childWidth: Int = 0
 
   // TODO ここに追加します
-  private var navigationItems = mutableListOf<NavigationMenu>()
+  private var items = mutableListOf<NavigationMenuItem>()
 
-  fun addNavigationItems(items: List<NavigationMenu>) {
-    navigationItems.addAll(items)
+  fun addNavigationItems(items: List<NavigationMenuItem>) {
+    this.items.addAll(items)
     buildMenuItems()
   }
 
@@ -57,7 +57,7 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
     if (itemViews.isNotEmpty()) itemViews.clear()
 
-    navigationItems.forEach {
+    items.forEach {
       val item = AnimationSwitchingBottomNavigationItemView(context).apply {
         initialize(it)
         setOnClickListener(onClickListener)

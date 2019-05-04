@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenu
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
 class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   context: Context,
@@ -27,7 +27,7 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
         newPosition: Int
       ) {
 
-        val nextItem = menuView.itemViews[newPosition].navigationItem
+        val nextItem = menuView.itemViews[newPosition].item
         onNavigationClickListener?.onClick(nextItem, newPosition)
         selectedItemPosition = newPosition
         selectedItemId = nextItem.id
@@ -75,12 +75,13 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
-    // SelectedBackgroundViewの位置を確定
+    // itemViewsがない場合itemViews[0]で落ちるのでチェック
     if (menuView.childCount == 0) return
 
+    // SelectedBackgroundViewの位置を確定
     val selectedBackgroundWidth = selectedBackgroundView.measuredWidth
     val selectedBackgroundHeight = selectedBackgroundView.measuredHeight
-    val itemViewWidth = menuView.itemViews[0].measuredWidth
+    val itemViewWidth = menuView.getChildAt(0).measuredWidth
     val differenceBetweenSelectedBackgroundAndItem = (itemViewWidth - selectedBackgroundWidth) / 2
     selectedBackgroundView.layout(
       differenceBetweenSelectedBackgroundAndItem,
@@ -90,11 +91,11 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     )
   }
 
-  fun addNavigationMenu(menuList: List<NavigationMenu>) {
-    menuView.addNavigationItems(menuList)
+  fun addNavigationMenuItem(menuItemList: List<NavigationMenuItem>) {
+    menuView.addNavigationItems(menuItemList)
   }
 
   interface OnNavigationClickListener {
-    fun onClick(navigationItem: NavigationMenu, newPosition: Int)
+    fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int)
   }
 }

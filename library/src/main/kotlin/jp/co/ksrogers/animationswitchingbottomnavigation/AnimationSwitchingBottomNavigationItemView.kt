@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenu
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
 class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
   context: Context,
@@ -15,7 +15,7 @@ class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
 
   private val icon: ImageView
 
-  lateinit var navigationItem: NavigationMenu
+  lateinit var item: NavigationMenuItem
 
   init {
     LayoutInflater.from(context)
@@ -26,9 +26,9 @@ class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
     icon = findViewById(R.id.icon)
   }
 
-  fun initialize(navigationItem: NavigationMenu) {
-    this.navigationItem = navigationItem
-    setIcon(resources.getDrawable(navigationItem.iconDrawableRes, null))
+  fun initialize(item: NavigationMenuItem) {
+    this.item = item
+    setIcon(resources.getDrawable(item.iconDrawableRes, null))
   }
 
   private fun setIcon(drawable: Drawable?) = icon.setImageDrawable(drawable)
