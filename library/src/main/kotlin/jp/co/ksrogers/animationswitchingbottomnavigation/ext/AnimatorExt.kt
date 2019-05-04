@@ -4,6 +4,9 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.TimeInterpolator
+import android.animation.TypeEvaluator
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.view.View
 
 fun View.animatorAlpha(vararg values: Float) = ObjectAnimator.ofFloat(this, "alpha", *values)
@@ -49,6 +52,24 @@ fun Animator.setListener(
 
     override fun onAnimationRepeat(animation: Animator) {
       onRepeat(animation)
+    }
+  })
+}
+
+fun ValueAnimator.setIntValuesExt(vararg colors: Int) = apply {
+  setIntValues(*colors)
+}
+
+fun ValueAnimator.setEvaluatorExt(evaluator: TypeEvaluator<*>) = apply {
+  setEvaluator(evaluator)
+}
+
+fun ValueAnimator.addUpdateLister(
+  onUpdate: (ValueAnimator?) -> Unit = {}
+) = apply {
+  addUpdateListener(object : AnimatorUpdateListener {
+    override fun onAnimationUpdate(animation: ValueAnimator?) {
+      onUpdate(animation)
     }
   })
 }

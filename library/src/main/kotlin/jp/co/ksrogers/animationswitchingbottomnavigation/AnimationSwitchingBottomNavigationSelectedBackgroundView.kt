@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.annotation.ColorInt
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
@@ -26,8 +26,15 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
       .toFloat()
 
   // TODO 色が固定になっているので、変える
-  private val colorRed = ContextCompat.getColor(context, R.color.red)
-  private val paintRed = Paint().apply { color = colorRed }
+  @ColorInt
+  var color: Int = 0
+    set(@ColorInt value) {
+      field = value
+      paint = Paint().apply { color = field }
+      invalidate()
+    }
+  private var paint =
+    Paint().apply { color = this@AnimationSwitchingBottomNavigationSelectedBackgroundView.color }
 
   private val underWartPath = Path()
 
@@ -113,6 +120,6 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
     underWartPath.lineTo(0F, 0F)
     canvas.clipPath(underWartPath)
 
-    canvas.drawPaint(paintRed)
+    canvas.drawPaint(paint)
   }
 }
