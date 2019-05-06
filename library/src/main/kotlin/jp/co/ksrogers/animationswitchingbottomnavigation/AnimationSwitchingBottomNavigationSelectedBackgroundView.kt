@@ -15,7 +15,7 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 
 /**
- * TODO 矩形の正確な描画は後回しです
+ * 選択状態のボタンの後ろの矩形を持ったView
  */
 @RestrictTo(LIBRARY_GROUP)
 @SuppressLint("CustomViewStyleable")
@@ -91,30 +91,23 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
     setMeasuredDimension(width, height)
   }
 
-  // TODO 3次べエジェ曲線で描画しないときれいな曲線にならないことがわかったので、置き換える。数学解く必要あり
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
     val maxWidth = measuredWidth.toFloat()
     val figureHeight = measuredHeight - bottomMargin
 
-    // スタート地点を移動
-    underWartPath.moveTo(0F, 0F)
-    // 左上から矩形の中心下までのベジェ曲線
     underWartPath.cubicTo(
-      maxWidth / 8,
-      0F,
       maxWidth / 4,
+      0F,
+      maxWidth / 8,
       figureHeight,
-      3 * maxWidth / 8,
+      maxWidth / 2,
       figureHeight
     )
-    // 下部に直線を入れる
-    underWartPath.lineTo(5 * maxWidth / 8, figureHeight)
-    // 矩形中心下から右上までのベジェ曲線
     underWartPath.cubicTo(
-      3 * maxWidth / 4,
-      figureHeight,
       7 * maxWidth / 8,
+      figureHeight,
+      3 * maxWidth / 4,
       0F,
       maxWidth,
       0F
