@@ -25,7 +25,6 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_background_bottom_margin)
       .toFloat()
 
-  // TODO 色が固定になっているので、変える
   @ColorInt
   var color: Int = 0
     set(@ColorInt value) {
