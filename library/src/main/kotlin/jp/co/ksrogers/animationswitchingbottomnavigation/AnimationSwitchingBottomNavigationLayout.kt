@@ -76,50 +76,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
           return
         }
 
-        val menuView = navigationView.menuView
-        val fromItemView = menuView.itemViews[selectedItemPosition]
-        val toItemView = menuView.itemViews[newPosition]
-        val selectedBackgroundView = navigationView.selectedBackgroundView
-        val fromColor = items[selectedItemPosition].selectedBackgroundColor
-        val toColor = items[newPosition].selectedBackgroundColor
-
-        if (animator?.isRunning != false) {
-          animator?.cancel()
-          animator = null
-        }
-
-        animator = AnimatorSet().playTogetherExt(
-          AnimatorSet().playSequentiallyExt(
-            createAnimatorFadeOutMenuItem(toItemView),
-            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
-          ),
-          AnimatorSet().playTogetherExt(
-            createAnimatorMoveToSelectedPosition(selectedButton, menuView, newPosition),
-            createAnimatorMoveToSelectedBackgroundPosition(
-              selectedBackgroundView,
-              menuView,
-              newPosition
-            ),
-            ValueAnimator().setIntValuesExt(
-              fromColor,
-              toColor
-            ).setEvaluatorExt(ArgbEvaluator()).addUpdateLister {
-              it?.let { animator ->
-                val color: Int = animator.animatedValue as Int
-                selectedBackgroundView.color = color
-              }
-            }.setDuration(FADE_ANIMATION_DURATION)
-          )
-        ).setListener(
-          onCancel = {
-            fromItemView.alpha = 1F
-            toItemView.alpha = 1F
-          }
-        )
+        animateToSelectedPosition(newPosition)
 
         selectedItemPosition = newPosition
-
-        animator?.start()
 
         onNavigationMenuItemSelectedListener?.onNavigationItemSelected(items[selectedItemPosition])
       }
@@ -305,6 +264,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       .setDurationExt(SLIDE_ANIMATION_DURATION)
   }
 
+  fun getItems() = items
+
   fun addNavigationMenuItem(item: NavigationMenuItem) {
     items.add(item)
     dispatchItem()
@@ -317,6 +278,59 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
   private fun dispatchItem() {
     navigationView.addNavigationMenuItem(items)
+  }
+
+  private fun animateToSelectedPosition(position: Int) {
+    val menuView = navigationView.menuView
+    val fromItemView = menuView.itemViews[selectedItemPosition]
+    val toItemView = menuView.itemViews[position]
+    val selectedBackgroundView = navigationView.selectedBackgroundView
+    val fromColor = items[selectedItemPosition].selectedBackgroundColor
+    val toColor = items[position].selectedBackgroundColor
+
+    if (animator?.isRunning != false) {
+      animator?.cancel()
+      animator = null
+    }
+
+    animator = AnimatorSet().playTogetherExt(
+      AnimatorSet().playSequentiallyExt(
+        createAnimatorFadeOutMenuItem(toItemView),
+        createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
+      ),
+      AnimatorSet().playTogetherExt(
+        createAnimatorMoveToSelectedPosition(selectedButton, menuView, position),
+        createAnimatorMoveToSelectedBackgroundPosition(
+          selectedBackgroundView,
+          menuView,
+          position
+        ),
+        ValueAnimator().setIntValuesExt(
+          fromColor,
+          toColor
+        ).setEvaluatorExt(ArgbEvaluator()).addUpdateLister {
+          it?.let { animator ->
+            val color: Int = animator.animatedValue as Int
+            selectedBackgroundView.color = color
+          }
+        }.setDuration(FADE_ANIMATION_DURATION)
+      )
+    ).setListener(
+      onCancel = {
+        fromItemView.alpha = 1F
+        toItemView.alpha = 1F
+      }
+    )
+
+    animator?.start()
+  }
+
+  fun setSelectedPosition(position: Int) {
+    if (selectedItemPosition == position) {
+      return
+    }
+    animateToSelectedPosition(position)
+    selectedItemPosition = position
   }
 
   interface OnNavigationMenuItemReselectedListener {

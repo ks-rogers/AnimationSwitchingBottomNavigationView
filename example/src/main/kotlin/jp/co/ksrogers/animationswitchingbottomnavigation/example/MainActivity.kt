@@ -43,34 +43,34 @@ class MainActivity : AppCompatActivity() {
       addNavigationMenuItem(
         listOf(
           NavigationMenuItem(
-            id = R.id.animation_switching_botttom_navigation_sample_id_1,
+            id = R.id.fragment_sample1,
             iconDrawableRes = R.drawable.ic_home_black_24dp,
             selectedBackgroundColor = ContextCompat.getColor(this@MainActivity, R.color.red)
           ),
           NavigationMenuItem(
-            id = R.id.animation_switching_botttom_navigation_sample_id_2,
+            id = R.id.fragment_sample2,
             iconDrawableRes = R.drawable.ic_home_black_24dp,
             selectedBackgroundColor = ContextCompat.getColor(this@MainActivity, R.color.blue)
           ),
           NavigationMenuItem(
-            id = R.id.animation_switching_botttom_navigation_sample_id_3,
+            id = R.id.fragment_sample3,
             iconDrawableRes = R.drawable.ic_home_black_24dp,
             selectedBackgroundColor = ContextCompat.getColor(this@MainActivity, R.color.green)
           ),
           NavigationMenuItem(
-            id = R.id.animation_switching_botttom_navigation_sample_id_4,
+            id = R.id.fragment_sample4,
             iconDrawableRes = R.drawable.ic_home_black_24dp,
             selectedBackgroundColor = ContextCompat.getColor(this@MainActivity, R.color.orange)
           ),
           NavigationMenuItem(
-            id = R.id.animation_switching_botttom_navigation_sample_id_5,
+            id = R.id.fragment_sample5,
             iconDrawableRes = R.drawable.ic_home_black_24dp,
             selectedBackgroundColor = ContextCompat.getColor(this@MainActivity, R.color.pink)
           )
         )
       )
-      onNavigationMenuItemSelectedListener = this@MainActivity.onNavigationItemSelectedListener
     }
     navController = findNavController(R.id.nav_fragment_main)
+    layout_animation_switching_bottom_navigation.setupWithNavController(navController)
   }
 }
