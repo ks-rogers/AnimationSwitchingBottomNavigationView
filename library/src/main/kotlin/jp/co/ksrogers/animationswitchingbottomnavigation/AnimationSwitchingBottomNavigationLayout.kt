@@ -80,9 +80,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         animator = AnimatorSet().playTogetherExt(
           AnimatorSet().playSequentiallyExt(
             createAnimatorFadeOutMenuItem(toItemView),
-            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(
-              FADE_ANIMATION_START_DELAY
-            )
+            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
           ),
           AnimatorSet().playTogetherExt(
             createAnimatorMoveToSelectedPosition(selectedButton, menuView, newPosition),
