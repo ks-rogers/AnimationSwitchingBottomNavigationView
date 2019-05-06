@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.annotation.NonNull
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.addUpdateLister
@@ -70,7 +71,10 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private val onNavigationClickListener =
     object : AnimationSwitchingBottomNavigationView.OnNavigationClickListener {
       override fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int) {
-        if (selectedItemPosition == newPosition) return
+        if (selectedItemPosition == newPosition) {
+          onNavigationMenuItemReselectedListener?.onNavigationItemReselected(items[selectedItemPosition])
+          return
+        }
 
         val menuView = navigationView.menuView
         val fromItemView = menuView.itemViews[selectedItemPosition]
@@ -116,6 +120,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         selectedItemPosition = newPosition
 
         animator?.start()
+
+        onNavigationMenuItemSelectedListener?.onNavigationItemSelected(items[selectedItemPosition])
       }
     }
 
@@ -144,6 +150,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
    * 外部からセットする
    */
   private val items = mutableListOf<NavigationMenuItem>()
+
+  var onNavigationMenuItemReselectedListener: OnNavigationMenuItemReselectedListener? = null
+  var onNavigationMenuItemSelectedListener: OnNavigationMenuItemSelectedListener? = null
 
   init {
     attrs?.let {
@@ -310,18 +319,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     navigationView.addNavigationMenuItem(items)
   }
 
-  // TODO 以下、イメージしてるinterface
-//  interface OnNavigationItemReselectedListener {
-//    fun onNavigationItemReselected(@NonNull item: MenuItem): Boolean
-//  }
-//
-//  interface OnNavigationItemSelectedListener {
-//    fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean
-//  }
-//
-//  interface OnNavigationAnimateLister {
-//    fun onAnimationStart()
-//    fun onAnimationCancel()
-//    fun onAnimationEnd()
-//  }
+  interface OnNavigationMenuItemReselectedListener {
+    fun onNavigationItemReselected(@NonNull item: NavigationMenuItem)
+  }
+
+  interface OnNavigationMenuItemSelectedListener {
+    fun onNavigationItemSelected(@NonNull item: NavigationMenuItem)
+  }
 }

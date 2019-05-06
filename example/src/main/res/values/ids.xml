@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="fragment_sample1" type="id"/>
+  <item name="fragment_sample2" type="id"/>
+  <item name="fragment_sample3" type="id"/>
+  <item name="fragment_sample4" type="id"/>
+  <item name="fragment_sample5" type="id"/>
+</resources>
