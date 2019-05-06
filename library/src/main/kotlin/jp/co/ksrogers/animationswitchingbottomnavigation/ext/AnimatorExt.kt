@@ -8,9 +8,11 @@ import android.view.View
 
 fun View.animatorAlpha(vararg values: Float) = ObjectAnimator.ofFloat(this, "alpha", *values)
 
-fun View.animatorTranslationY(vararg values: Float) = ObjectAnimator.ofFloat(this, "translationY", *values)
+fun View.animatorTranslationY(vararg values: Float) =
+  ObjectAnimator.ofFloat(this, "translationY", *values)
 
-fun View.animatorTranslationX(vararg values: Float) = ObjectAnimator.ofFloat(this, "translationX", *values)
+fun View.animatorTranslationX(vararg values: Float) =
+  ObjectAnimator.ofFloat(this, "translationX", *values)
 
 fun View.animatorY(vararg values: Float) = ObjectAnimator.ofFloat(this, "y", *values)
 

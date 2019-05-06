@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.ViewCompat
-import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
 class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   context: Context,
@@ -18,41 +18,44 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
     // セレクトされたpositionを取得する
     run loop@{
-      itemViews.map { it.itemData }.forEachIndexed { index, item ->
-        if (item.itemId == newItemView.itemData.itemId) {
+      itemViews.map { it.item }.forEachIndexed { index, item ->
+        if (item.id == newItemView.item.id) {
           newSelectedItemPosition = index
           return@loop
         }
       }
     }
 
-    items[newSelectedItemPosition].takeIf { !it.isChecked }?.isChecked = true
+    itemViews[newSelectedItemPosition].takeIf { !it.isSelected }?.isSelected = true
 
     onMenuItemClickListener?.onClick(this, newSelectedItemPosition)
 
-    items[selectedItemPosition].takeIf { it.isChecked }?.isChecked = false
+    itemViews[selectedItemPosition].takeIf { it.isSelected }?.isSelected = false
     selectedItemPosition = newSelectedItemPosition
-    selectedItemId = items[newSelectedItemPosition].itemId
   }
 
-  // TODO for sample
-  var items = MenuItem.getSampleMenuItems(context)
   var onMenuItemClickListener: OnMenuItemClickListener? = null
   var itemViews = mutableListOf<AnimationSwitchingBottomNavigationItemView>()
-  private var selectedItemId = 0
   private var selectedItemPosition = 0
   private var childWidth: Int = 0
 
-  init {
-    buildMenuItems(items)
+  private var items = mutableListOf<NavigationMenuItem>()
+
+  fun addNavigationItems(items: List<NavigationMenuItem>) {
+    this.items.addAll(items)
+    buildMenuItems()
   }
 
-  private fun buildMenuItems(menus: List<MenuItem>) {
+  init {
+    buildMenuItems()
+  }
+
+  private fun buildMenuItems() {
     this.removeAllViews()
 
     if (itemViews.isNotEmpty()) itemViews.clear()
 
-    menus.forEach {
+    items.forEach {
       val item = AnimationSwitchingBottomNavigationItemView(context).apply {
         initialize(it)
         setOnClickListener(onClickListener)
@@ -61,7 +64,9 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
       this.addView(item)
     }
 
-    itemViews[selectedItemPosition].setChecked(true)
+    if (itemViews.size > selectedItemPosition) {
+      itemViews[selectedItemPosition].isSelected = true
+    }
   }
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

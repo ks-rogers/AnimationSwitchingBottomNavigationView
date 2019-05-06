@@ -16,7 +16,8 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
 
   private var ovalDrawable: Drawable? = null
   private var buttonColor: ColorStateList? = null
-  @IdRes private var menuViewId: Int = 0
+  @IdRes
+  private var menuViewId: Int = 0
 
   // TODO for click check logging
   private val onClickListener = OnClickListener {
@@ -31,7 +32,8 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
       )
       buttonColor =
         a.getColorStateList(R.styleable.AnimationSwitchingBottomNavigationSelectedButton_buttonColor)
-      menuViewId = a.getResourceId(R.styleable.AnimationSwitchingBottomNavigationSelectedButton_menuViewId, 0)
+      menuViewId =
+        a.getResourceId(R.styleable.AnimationSwitchingBottomNavigationSelectedButton_menuViewId, 0)
       a.recycle()
     }
 

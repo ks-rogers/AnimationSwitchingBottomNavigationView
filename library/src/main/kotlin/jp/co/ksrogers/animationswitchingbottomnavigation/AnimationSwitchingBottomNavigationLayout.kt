@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
+import androidx.annotation.DrawableRes
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.animatorAlpha
@@ -16,7 +17,6 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.ext.playTogetherExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setDurationExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setListener
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setStartDelayExt
-import jp.co.ksrogers.animationswitchingbottomnavigation.internal.MenuItem
 
 /**
  * 最終的にライブラリとして開発者に提供されるLayout。
@@ -44,6 +44,15 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     }
   }
 
+  /**
+   * 外部からセットするためのdata class
+   */
+  data class NavigationMenuItem(
+    val id: Int,
+    @DrawableRes val iconDrawableRes: Int,
+    val selectedBackgroundColor: Int
+  )
+
   companion object {
     const val MAX_CHILD_COUNT = 3
     const val SLIDE_ANIMATION_DURATION = 300L
@@ -55,7 +64,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   // NavigationViewでイベントが発火されたときに呼び出されるリスナー
   private val onNavigationClickListener =
     object : AnimationSwitchingBottomNavigationView.OnNavigationClickListener {
-      override fun onClick(menuItem: MenuItem, newPosition: Int) {
+      override fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int) {
         if (selectedItemPosition == newPosition) return
 
         val menuView = navigationView.menuView
@@ -71,12 +80,15 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         animator = AnimatorSet().playTogetherExt(
           AnimatorSet().playSequentiallyExt(
             createAnimatorFadeOutMenuItem(toItemView),
-            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(
-              FADE_ANIMATION_START_DELAY)
+            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
           ),
           AnimatorSet().playTogetherExt(
             createAnimatorMoveToSelectedPosition(selectedButton, menuView, newPosition),
-            createAnimatorMoveToSelectedBackgroundPosition(selectedBackgroundView, menuView, newPosition)
+            createAnimatorMoveToSelectedBackgroundPosition(
+              selectedBackgroundView,
+              menuView,
+              newPosition
+            )
           )
         ).setListener(
           onCancel = {
@@ -111,6 +123,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private var buttonBackgroundColor: ColorStateList? = null
   private var selectedItemPosition: Int = 0
   private var animator: Animator? = null
+
+  /**
+   * 外部からセットする
+   */
+  private val items = mutableListOf<NavigationMenuItem>()
 
   init {
     attrs?.let {
@@ -202,10 +219,13 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
+    // itemViewsがない場合itemViews[0]で落ちるのでチェック
+    if (navigationView.menuView.itemViews.size == 0) return
+
     // SelectedButtonの位置を確定
     val selectedWidth = selectedButton.measuredWidth
     val selectedHeight = selectedButton.measuredHeight
-    val itemViewWidth = navigationView.menuView.itemViews[0].measuredWidth
+    val itemViewWidth = navigationView.menuView.getChildAt(0).measuredWidth
     val differenceBetweenSelectedAndItem = (itemViewWidth - selectedWidth) / 2
     selectedButton.layout(
       differenceBetweenSelectedAndItem,
@@ -215,49 +235,63 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     )
   }
 
-  fun createAnimatorFadeOutMenuItem(
+  private fun createAnimatorFadeOutMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
     return itemView.animatorAlpha(1F, 0F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
-  fun createAnimatorFadeInMenuItem(
+  private fun createAnimatorFadeInMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
   ): Animator {
     return itemView.animatorAlpha(0F, 1F)
       .setDurationExt(FADE_ANIMATION_DURATION)
   }
 
-  fun createAnimatorMoveToSelectedPosition(
+  private fun createAnimatorMoveToSelectedPosition(
     selectedButton: AnimationSwitchingBottomNavigationSelectedButton,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
     // animate animationSwitchingBottomNavigationSelectedButtonView
     val selectedButtonWidth = selectedButton.measuredWidth
-    val itemViewWidth = menuView.itemViews[newPosition].measuredWidth
+    val itemViewWidth = menuView.getChildAt(newPosition).measuredWidth
     val startX = selectedButton.x
-    val targetX = menuView.itemViews[newPosition].x + (itemViewWidth - selectedButtonWidth) / 2
+    val targetX = menuView.getChildAt(newPosition).x + (itemViewWidth - selectedButtonWidth) / 2
 
     return selectedButton.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
       .setStartDelayExt(SLIDE_ANIMATION_START_DELAY)
   }
 
-  fun createAnimatorMoveToSelectedBackgroundPosition(
+  private fun createAnimatorMoveToSelectedBackgroundPosition(
     selectedBackground: AnimationSwitchingBottomNavigationSelectedBackgroundView,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
     // animate selectedBackground
     val selectedBackgroundWidth = navigationView.selectedBackgroundView.measuredWidth
-    val itemViewWidth = menuView.itemViews[newPosition].measuredWidth
+    val itemViewWidth = menuView.getChildAt(newPosition).measuredWidth
     val startX = selectedBackground.x
-    val targetX = menuView.itemViews[newPosition].x + (itemViewWidth - selectedBackgroundWidth) / 2
+    val targetX = menuView.getChildAt(newPosition).x + (itemViewWidth - selectedBackgroundWidth) / 2
 
     return selectedBackground.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
+  }
+
+  fun addNavigationMenuItem(item: NavigationMenuItem) {
+    items.add(item)
+    dispatchItem()
+  }
+
+  fun addNavigationMenuItem(items: List<NavigationMenuItem>) {
+    this.items.addAll(items)
+    dispatchItem()
+  }
+
+  private fun dispatchItem() {
+    navigationView.addNavigationMenuItem(items)
   }
 
   // TODO 以下、イメージしてるinterface
