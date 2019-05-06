@@ -8,7 +8,10 @@ import android.view.View.OnClickListener
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.IdRes
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 
+@RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null

@@ -8,6 +8,8 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
@@ -15,6 +17,7 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
 /**
  * TODO 矩形の正確な描画は後回しです
  */
+@RestrictTo(LIBRARY_GROUP)
 @SuppressLint("CustomViewStyleable")
 class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads constructor(
   context: Context,

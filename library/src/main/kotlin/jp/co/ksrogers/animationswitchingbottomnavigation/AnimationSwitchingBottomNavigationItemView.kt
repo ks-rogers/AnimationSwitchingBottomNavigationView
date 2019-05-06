@@ -6,8 +6,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
+@RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null

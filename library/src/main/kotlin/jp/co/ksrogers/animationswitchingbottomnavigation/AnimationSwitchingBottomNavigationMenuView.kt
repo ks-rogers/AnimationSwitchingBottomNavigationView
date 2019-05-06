@@ -4,9 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.core.view.ViewCompat
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
+@RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null
