@@ -17,9 +17,6 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   private var selectedItemId: Int = 0
   private var selectedItemPosition: Int = 0
 
-  /**
-   * クリックされたときにアニメーションさせる
-   */
   private val onMenuItemClickListener =
     object : AnimationSwitchingBottomNavigationMenuView.OnMenuItemClickListener {
       override fun onClick(
@@ -93,6 +90,10 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
 
   fun addNavigationMenuItem(menuItemList: List<NavigationMenuItem>) {
     menuView.addNavigationItems(menuItemList)
+
+    if (menuItemList.size > selectedItemPosition) {
+      selectedBackgroundView.color = menuItemList[selectedItemPosition].selectedBackgroundColor
+    }
   }
 
   interface OnNavigationClickListener {

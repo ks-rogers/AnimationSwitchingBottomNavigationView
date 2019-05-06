@@ -2,6 +2,8 @@ package jp.co.ksrogers.animationswitchingbottomnavigation
 
 import android.animation.Animator
 import android.animation.AnimatorSet
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
@@ -10,11 +12,14 @@ import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
+import jp.co.ksrogers.animationswitchingbottomnavigation.ext.addUpdateLister
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.animatorAlpha
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.animatorX
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.playSequentiallyExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.playTogetherExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setDurationExt
+import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setEvaluatorExt
+import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setIntValuesExt
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setListener
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setStartDelayExt
 
@@ -71,6 +76,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         val fromItemView = menuView.itemViews[selectedItemPosition]
         val toItemView = menuView.itemViews[newPosition]
         val selectedBackgroundView = navigationView.selectedBackgroundView
+        val fromColor = items[selectedItemPosition].selectedBackgroundColor
+        val toColor = items[newPosition].selectedBackgroundColor
 
         if (animator?.isRunning != false) {
           animator?.cancel()
@@ -88,7 +95,16 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
               selectedBackgroundView,
               menuView,
               newPosition
-            )
+            ),
+            ValueAnimator().setIntValuesExt(
+              fromColor,
+              toColor
+            ).setEvaluatorExt(ArgbEvaluator()).addUpdateLister {
+              it?.let { animator ->
+                val color: Int = animator.animatedValue as Int
+                selectedBackgroundView.color = color
+              }
+            }.setDuration(FADE_ANIMATION_DURATION)
           )
         ).setListener(
           onCancel = {
