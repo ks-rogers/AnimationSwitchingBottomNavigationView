@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.annotation.NonNull
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.addUpdateLister
@@ -70,52 +71,16 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private val onNavigationClickListener =
     object : AnimationSwitchingBottomNavigationView.OnNavigationClickListener {
       override fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int) {
-        if (selectedItemPosition == newPosition) return
-
-        val menuView = navigationView.menuView
-        val fromItemView = menuView.itemViews[selectedItemPosition]
-        val toItemView = menuView.itemViews[newPosition]
-        val selectedBackgroundView = navigationView.selectedBackgroundView
-        val fromColor = items[selectedItemPosition].selectedBackgroundColor
-        val toColor = items[newPosition].selectedBackgroundColor
-
-        if (animator?.isRunning != false) {
-          animator?.cancel()
-          animator = null
+        if (selectedItemPosition == newPosition) {
+          onNavigationMenuItemReselectedListener?.onNavigationItemReselected(items[selectedItemPosition])
+          return
         }
 
-        animator = AnimatorSet().playTogetherExt(
-          AnimatorSet().playSequentiallyExt(
-            createAnimatorFadeOutMenuItem(toItemView),
-            createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
-          ),
-          AnimatorSet().playTogetherExt(
-            createAnimatorMoveToSelectedPosition(selectedButton, menuView, newPosition),
-            createAnimatorMoveToSelectedBackgroundPosition(
-              selectedBackgroundView,
-              menuView,
-              newPosition
-            ),
-            ValueAnimator().setIntValuesExt(
-              fromColor,
-              toColor
-            ).setEvaluatorExt(ArgbEvaluator()).addUpdateLister {
-              it?.let { animator ->
-                val color: Int = animator.animatedValue as Int
-                selectedBackgroundView.color = color
-              }
-            }.setDuration(FADE_ANIMATION_DURATION)
-          )
-        ).setListener(
-          onCancel = {
-            fromItemView.alpha = 1F
-            toItemView.alpha = 1F
-          }
-        )
+        animateToSelectedPosition(newPosition)
 
         selectedItemPosition = newPosition
 
-        animator?.start()
+        onNavigationMenuItemSelectedListener?.onNavigationItemSelected(items[selectedItemPosition])
       }
     }
 
@@ -144,6 +109,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
    * 外部からセットする
    */
   private val items = mutableListOf<NavigationMenuItem>()
+
+  var onNavigationMenuItemReselectedListener: OnNavigationMenuItemReselectedListener? = null
+  var onNavigationMenuItemSelectedListener: OnNavigationMenuItemSelectedListener? = null
 
   init {
     attrs?.let {
@@ -296,6 +264,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       .setDurationExt(SLIDE_ANIMATION_DURATION)
   }
 
+  fun getItems() = items
+
   fun addNavigationMenuItem(item: NavigationMenuItem) {
     items.add(item)
     dispatchItem()
@@ -310,18 +280,64 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     navigationView.addNavigationMenuItem(items)
   }
 
-  // TODO 以下、イメージしてるinterface
-//  interface OnNavigationItemReselectedListener {
-//    fun onNavigationItemReselected(@NonNull item: MenuItem): Boolean
-//  }
-//
-//  interface OnNavigationItemSelectedListener {
-//    fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean
-//  }
-//
-//  interface OnNavigationAnimateLister {
-//    fun onAnimationStart()
-//    fun onAnimationCancel()
-//    fun onAnimationEnd()
-//  }
+  private fun animateToSelectedPosition(position: Int) {
+    val menuView = navigationView.menuView
+    val fromItemView = menuView.itemViews[selectedItemPosition]
+    val toItemView = menuView.itemViews[position]
+    val selectedBackgroundView = navigationView.selectedBackgroundView
+    val fromColor = items[selectedItemPosition].selectedBackgroundColor
+    val toColor = items[position].selectedBackgroundColor
+
+    if (animator?.isRunning != false) {
+      animator?.cancel()
+      animator = null
+    }
+
+    animator = AnimatorSet().playTogetherExt(
+      AnimatorSet().playSequentiallyExt(
+        createAnimatorFadeOutMenuItem(toItemView),
+        createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
+      ),
+      AnimatorSet().playTogetherExt(
+        createAnimatorMoveToSelectedPosition(selectedButton, menuView, position),
+        createAnimatorMoveToSelectedBackgroundPosition(
+          selectedBackgroundView,
+          menuView,
+          position
+        ),
+        ValueAnimator().setIntValuesExt(
+          fromColor,
+          toColor
+        ).setEvaluatorExt(ArgbEvaluator()).addUpdateLister {
+          it?.let { animator ->
+            val color: Int = animator.animatedValue as Int
+            selectedBackgroundView.color = color
+          }
+        }.setDuration(FADE_ANIMATION_DURATION)
+      )
+    ).setListener(
+      onCancel = {
+        fromItemView.alpha = 1F
+        toItemView.alpha = 1F
+      }
+    )
+
+    animator?.start()
+  }
+
+  fun setSelectedPosition(position: Int) {
+    if (selectedItemPosition == position) {
+      return
+    }
+    animateToSelectedPosition(position)
+    selectedItemPosition = position
+  }
+
+  interface OnNavigationMenuItemReselectedListener {
+    fun onNavigationItemReselected(@NonNull item: NavigationMenuItem)
+  }
+
+  interface OnNavigationMenuItemSelectedListener {
+    fun onNavigationItemSelected(@NonNull item: NavigationMenuItem)
+  }
 }

@@ -35,6 +35,11 @@ dependencies {
   implementation deps.androidx.app_compat
   implementation deps.androidx.constraintLayout
   implementation deps.androidx.core_ktx
+
+  implementation deps.androidx.navigation.fragment
+  implementation deps.androidx.navigation.fragment_ltx
+  implementation deps.androidx.navigation.ui
+  implementation deps.androidx.navigation.ui_ktx
 }
 
 // For Debugging
