@@ -5,40 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
-import kotlinx.android.synthetic.main.activity_sample.*
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemReselectedListener
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
   private lateinit var navController: NavController
 
-  val onNavigationItemSelectedListener =
-    object : AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener {
-      override fun onNavigationItemSelected(item: NavigationMenuItem) {
-        when (item.id) {
-          R.id.animation_switching_botttom_navigation_sample_id_1 -> {
-            navController.navigate(R.id.fragment_sample1)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_2 -> {
-            navController.navigate(R.id.fragment_sample2)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_3 -> {
-            navController.navigate(R.id.fragment_sample3)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_4 -> {
-            navController.navigate(R.id.fragment_sample4)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_5 -> {
-            navController.navigate(R.id.fragment_sample5)
-          }
-        }
-      }
-    }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_sample)
+    setContentView(R.layout.activity_main)
     layout_animation_switching_bottom_navigation.apply {
       addNavigationMenuItem(
         listOf(
@@ -72,5 +50,15 @@ class MainActivity : AppCompatActivity() {
     }
     navController = findNavController(R.id.nav_fragment_main)
     layout_animation_switching_bottom_navigation.setupWithNavController(navController)
+
+    // レイアウトファイルに定義したViewに対してlistener設定などを行う
+    with(layout_animation_switching_bottom_navigation_selected_layout) {
+      setOnNavigationItemSelectedListener {
+        selected_item_animation_view.playAnimation()
+      }
+      setOnNavigationItemReselectedListener {
+        selected_item_animation_view.playAnimation()
+      }
+    }
   }
 }
