@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.NonNull
+import androidx.core.view.children
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.addUpdateLister
@@ -90,7 +91,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       onNavigationClickListener =
         this@AnimationSwitchingBottomNavigationLayout.onNavigationClickListener
     }
-  private lateinit var selectedItemLayout: AnimationSwitchingBottomNavigationSelectedItemLayout
+  private var selectedItemLayout: FrameLayout =
+    AnimationSwitchingBottomNavigationSelectedButton(context, attrs)
 
   private var navigationViewHeight =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
@@ -124,24 +126,25 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
           R.styleable.AnimationSwitchingBottomNavigationLayout_navigationViewHeight,
           resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
         )
-      val selectedButtonSize = SelectedButtonSize.fromIndex(
+      SelectedButtonSize.fromIndex(
         a.getInt(
           R.styleable.AnimationSwitchingBottomNavigationLayout_selectedButtonSize,
           0
         )
-      )
-      when (selectedButtonSize) {
-        NORMAL -> {
-          selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
-          selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
-        }
-        SMALL -> {
-          selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_width)
-          selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_height)
+      ).also { selectedButtonSize ->
+        when (selectedButtonSize) {
+          NORMAL -> {
+            selectedWidth =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
+            selectedHeight =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
+          }
+          SMALL -> {
+            selectedWidth =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_width)
+            selectedHeight =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_height)
+          }
         }
       }
       a.recycle()
@@ -154,13 +157,16 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
     if (childCount < MAX_CHILD_COUNT) {
       // 内部に[AnimationSwitchingBottomNavigationSelectedItemLayout]があるかチェックする
-      selectedItemLayout =
-        findViewWithTag(AnimationSwitchingBottomNavigationSelectedItemLayout.DEFAULT_TAG)
-          ?: throw IllegalStateException("This layout have to child view of AnimationSwitchingBottomNavigationSelectedItemLayout.")
-      setSelectedItemLayout(selectedItemLayout)
+      val layout: AnimationSwitchingBottomNavigationSelectedItemLayout? =
+        children.firstOrNull {
+          it is AnimationSwitchingBottomNavigationSelectedItemLayout
+        } as? AnimationSwitchingBottomNavigationSelectedItemLayout
 
-      // 描画順序を入れ替えたい都合上、一度親のViewGroupから切り離す
-      removeView(selectedItemLayout)
+      layout?.let { itemLayout ->
+        setSelectedItemLayout(itemLayout)
+        // 描画順序を入れ替えたい都合上、一度親のViewGroupから切り離す
+        removeView(selectedItemLayout)
+      }
 
       addView(
         navigationView,
@@ -224,11 +230,18 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     )
   }
 
-  private fun setSelectedItemLayout(layout: AnimationSwitchingBottomNavigationSelectedItemLayout) {
+  @Suppress("unused")
+  fun setSelectedItemLayout(layout: FrameLayout) {
     selectedItemLayout = layout
-    onNavigationMenuItemSelectedListeners.add(layout)
-    onNavigationMenuItemReselectedListener = layout
+    (layout as? OnNavigationMenuItemSelectedListener)?.let { listener ->
+      onNavigationMenuItemSelectedListeners.add(listener)
+    }
+    (layout as? OnNavigationMenuItemReselectedListener)?.let { listener ->
+      onNavigationMenuItemReselectedListener = listener
+    }
   }
+
+  fun getSelectedItemLayout() = selectedItemLayout
 
   private fun createAnimatorFadeOutMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
@@ -245,7 +258,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   }
 
   private fun createAnimatorMoveToSelectedPosition(
-    selectedItemLayout: AnimationSwitchingBottomNavigationSelectedItemLayout,
+    selectedItemLayout: FrameLayout,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
@@ -278,11 +291,13 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
   fun getItems() = items
 
+  @Suppress("unused")
   fun addNavigationMenuItem(item: NavigationMenuItem) {
     items.add(item)
     dispatchItem()
   }
 
+  @Suppress("unused")
   fun addNavigationMenuItem(items: List<NavigationMenuItem>) {
     this.items.addAll(items)
     dispatchItem()

@@ -19,16 +19,10 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
   OnNavigationMenuItemSelectedListener,
   OnNavigationMenuItemReselectedListener {
 
-  companion object {
-    internal const val DEFAULT_TAG = "default_tag"
-  }
-
   private var onNavigationMenuItemSelectedListener: OnNavigationMenuItemSelectedListener? = null
   private var onNavigationMenuItemReselectedListener: OnNavigationMenuItemReselectedListener? = null
 
   init {
-    tag = DEFAULT_TAG
-
     attrs?.let {
       val a = context.obtainStyledAttributes(
         it,
@@ -67,10 +61,12 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
     onNavigationMenuItemReselectedListener?.onNavigationItemReselected(item)
   }
 
+  @Suppress("unused")
   fun setOnNavigationItemSelectedListener(l: OnNavigationMenuItemSelectedListener) {
     onNavigationMenuItemSelectedListener = l
   }
 
+  @Suppress("unused")
   fun setOnNavigationItemSelectedListener(l: (NavigationMenuItem) -> Unit) {
     setOnNavigationItemSelectedListener(
       object : OnNavigationMenuItemSelectedListener {
@@ -81,10 +77,12 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
     )
   }
 
+  @Suppress("unused")
   fun setOnNavigationItemReselectedListener(l: OnNavigationMenuItemReselectedListener) {
     onNavigationMenuItemReselectedListener = l
   }
 
+  @Suppress("unused")
   fun setOnNavigationItemReselectedListener(l: (NavigationMenuItem) -> Unit) {
     setOnNavigationItemReselectedListener(
       object : OnNavigationMenuItemReselectedListener {

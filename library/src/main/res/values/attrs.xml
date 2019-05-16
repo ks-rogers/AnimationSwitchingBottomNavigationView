@@ -10,7 +10,6 @@
       <enum name="normal" value="0"/>
       <enum name="small" value="1"/>
     </attr>
-    <attr name="selectedItemLayoutTag" format="string"/>
   </declare-styleable>
   <declare-styleable name="AnimationSwitchingBottomNavigationSelectedItemLayout">
     <attr name="roundedBackgroundColor" format="color"/>
