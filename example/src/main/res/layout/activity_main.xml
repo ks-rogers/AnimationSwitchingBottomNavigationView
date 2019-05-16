@@ -27,23 +27,24 @@
 
   </LinearLayout>
 
-  <jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout
-    android:id="@+id/layout_animation_switching_bottom_navigation_selected_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:roundedBackgroundColor="@android:color/white"
-    app:useRoundedBackground="true"
-    >
+  <!-- 自前でbuttonのレイアウトを組む場合は以下のようにする -->
+<!--  <jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout-->
+<!--    android:id="@+id/layout_animation_switching_bottom_navigation_selected_layout"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:roundedBackgroundColor="@android:color/white"-->
+<!--    app:useRoundedBackground="true"-->
+<!--    >-->
 
-    <com.airbnb.lottie.LottieAnimationView
-      android:id="@+id/selected_item_animation_view"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="8dp"
-      app:lottie_autoPlay="false"
-      app:lottie_rawRes="@raw/success"
-      />
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--      android:id="@+id/selected_item_animation_view"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="match_parent"-->
+<!--      android:padding="8dp"-->
+<!--      app:lottie_autoPlay="false"-->
+<!--      app:lottie_rawRes="@raw/success"-->
+<!--      />-->
 
-  </jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout>
+<!--  </jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout>-->
 
 </jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout>
