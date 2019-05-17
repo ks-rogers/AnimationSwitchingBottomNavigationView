@@ -293,6 +293,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       animator = null
     }
 
+    // avoid flicking
+    fromItemView.alpha = 0.0F
+
     animator = AnimatorSet().playTogetherExt(
       AnimatorSet().playSequentiallyExt(
         createAnimatorFadeOutMenuItem(toItemView),
