@@ -1,7 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
+<jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/layout_animation_switching_bottom_navigation"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  app:navigationViewHeight="?attr/actionBarSize"
+  app:selectedButtonSize="normal"
+  >
 
-</LinearLayout>
+  <!-- 自前でbuttonのレイアウトを組む場合は以下のようにする -->
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    >
+
+    <fragment
+      android:id="@+id/nav_fragment_main"
+      android:name="androidx.navigation.fragment.NavHostFragment"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:defaultNavHost="true"
+      app:navGraph="@navigation/nav_sample"
+      />
+
+  </LinearLayout>
+
+  <jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout
+    android:id="@+id/layout_animation_switching_bottom_navigation_selected_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:roundedBackgroundColor="@android:color/white"
+    app:useRoundedBackground="true"
+    >
+
+    <com.airbnb.lottie.LottieAnimationView
+      android:id="@+id/selected_item_animation_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="8dp"
+      app:lottie_autoPlay="false"
+      app:lottie_rawRes="@raw/success"
+      />
+  </jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedItemLayout>
+
+</jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout>

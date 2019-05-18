@@ -7,11 +7,15 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemReselectedListener
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedButton
 import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Sample code for implement navigation with library.
+ *
+ * Use [jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedButton] in this class.
+ *
+ * It is generated automatically by [jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout].
+ */
 class MainActivity : AppCompatActivity() {
 
   private lateinit var navController: NavController
@@ -53,19 +57,11 @@ class MainActivity : AppCompatActivity() {
     navController = findNavController(R.id.nav_fragment_main)
     layout_animation_switching_bottom_navigation.setupWithNavController(navController)
 
-    // レイアウトファイルに定義したViewに対してlistener設定などを行う
-//    with(layout_animation_switching_bottom_navigation_selected_layout) {
-//      setOnNavigationItemSelectedListener {
-//        selected_item_animation_view.playAnimation()
-//      }
-//      setOnNavigationItemReselectedListener {
-//        selected_item_animation_view.playAnimation()
-//      }
-//    }
-
     // デフォルトで設定されるボタンに対してlistener設定などを行う
-    layout_animation_switching_bottom_navigation.getSelectedItemLayout().setOnClickListener {
-      Toast.makeText(this, "button clicked", Toast.LENGTH_SHORT).show()
+    layout_animation_switching_bottom_navigation.getSelectedItemLayout().apply {
+      setOnClickListener {
+        Toast.makeText(this@MainActivity, "button clicked", Toast.LENGTH_SHORT).show()
+      }
     }
   }
 }

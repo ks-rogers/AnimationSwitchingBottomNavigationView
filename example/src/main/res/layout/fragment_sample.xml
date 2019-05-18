@@ -3,7 +3,15 @@
   android:id="@+id/frame_sample"
   android:orientation="vertical"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  >
+
+  <Button
+    android:id="@+id/btn_open_main2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Open Main2"
+    />
 
   <TextView
     android:id="@+id/text_sample"
