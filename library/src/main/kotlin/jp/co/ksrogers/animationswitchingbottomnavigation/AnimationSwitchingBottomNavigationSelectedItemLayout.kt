@@ -51,6 +51,9 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
 
       a.recycle()
     }
+
+    // NavigationLayoutの他のviewの下に潜ってしまうのを防止するために必要
+    elevation = 1f
   }
 
   override fun onNavigationItemSelected(item: NavigationMenuItem) {

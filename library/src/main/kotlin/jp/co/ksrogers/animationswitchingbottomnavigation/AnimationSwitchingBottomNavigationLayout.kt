@@ -157,22 +157,23 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
     if (childCount < MAX_CHILD_COUNT) {
       // 内部に[AnimationSwitchingBottomNavigationSelectedItemLayout]があるかチェックする
-      val layout: AnimationSwitchingBottomNavigationSelectedItemLayout? =
-        children.firstOrNull {
-          it is AnimationSwitchingBottomNavigationSelectedItemLayout
-        } as? AnimationSwitchingBottomNavigationSelectedItemLayout
+      val layout = children.firstOrNull {
+        it is AnimationSwitchingBottomNavigationSelectedItemLayout
+      } as? AnimationSwitchingBottomNavigationSelectedItemLayout
 
-      layout?.let { itemLayout ->
-        setSelectedItemLayout(itemLayout)
-        // 描画順序を入れ替えたい都合上、一度親のViewGroupから切り離す
-        removeView(selectedItemLayout)
+      layout?.let {
+        setSelectedItemLayout(it)
       }
 
       addView(
         navigationView,
         LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
       )
-      addView(selectedItemLayout)
+
+      // デフォルトの[AnimationSwitchingBottomNavigationSelectedButton]はaddViewされてないのでここで追加
+      if (!children.contains(selectedItemLayout)) {
+        addView(selectedItemLayout)
+      }
     }
 
     if (childCount > MAX_CHILD_COUNT) throw IllegalStateException("This Layout can not have views more than 3.")
