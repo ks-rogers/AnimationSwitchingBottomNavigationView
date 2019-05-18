@@ -52,4 +52,8 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
   override fun setBackgroundTintList(tint: ColorStateList?) {
     ovalDrawable?.setTintList(tint)
   }
+
+  fun setOvalTintList(tint: ColorStateList?) {
+    ovalDrawable?.setTintList(tint)
+  }
 }

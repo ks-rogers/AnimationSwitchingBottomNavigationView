@@ -91,8 +91,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       onNavigationClickListener =
         this@AnimationSwitchingBottomNavigationLayout.onNavigationClickListener
     }
-  private var selectedItemLayout: FrameLayout =
-    AnimationSwitchingBottomNavigationSelectedButton(context, attrs)
+  private lateinit var selectedItemLayout: FrameLayout
 
   private var navigationViewHeight =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
@@ -116,6 +115,8 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     mutableListOf()
 
   init {
+    val selectedButton = AnimationSwitchingBottomNavigationSelectedButton(context, attrs)
+
     attrs?.let {
       val a = context.obtainStyledAttributes(
         it,
@@ -126,6 +127,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
           R.styleable.AnimationSwitchingBottomNavigationLayout_navigationViewHeight,
           resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
         )
+      selectedButton.setOvalTintList(
+        a.getColorStateList(
+          R.styleable.AnimationSwitchingBottomNavigationLayout_selectedButtonBackgroundColor
+        )
+      )
       SelectedButtonSize.fromIndex(
         a.getInt(
           R.styleable.AnimationSwitchingBottomNavigationLayout_selectedButtonSize,
@@ -149,6 +155,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       }
       a.recycle()
     }
+    selectedItemLayout = selectedButton
   }
 
   // 描画順序を考慮して、XMLのパースが終わった後にNavigationViewとSelectedButtonを追加する
