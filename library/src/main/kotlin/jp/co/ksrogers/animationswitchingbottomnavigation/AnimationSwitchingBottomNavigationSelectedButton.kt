@@ -4,9 +4,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.View.OnClickListener
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
@@ -15,17 +14,13 @@ import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null
-) : ImageButton(context, attrs) {
+) : FrameLayout(context, attrs) {
 
+  private val buttonView = ImageView(context, attrs)
   private var ovalDrawable: Drawable? = null
   private var buttonColor: ColorStateList? = null
   @IdRes
   private var menuViewId: Int = 0
-
-  // TODO for click check logging
-  private val onClickListener = OnClickListener {
-    Toast.makeText(context, "クリック", Toast.LENGTH_SHORT).show()
-  }
 
   init {
     attrs?.let {
@@ -46,11 +41,19 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
     ).apply {
       setTintList(buttonColor)
     }
-    background = ovalDrawable
-    setOnClickListener(onClickListener)
+
+    buttonView.apply {
+      background = ovalDrawable
+    }.also {
+      addView(it)
+    }
   }
 
-  override fun setBackgroundTintList(colorStateList: ColorStateList?) {
-    ovalDrawable?.setTintList(colorStateList)
+  override fun setBackgroundTintList(tint: ColorStateList?) {
+    ovalDrawable?.setTintList(tint)
+  }
+
+  fun setOvalTintList(tint: ColorStateList?) {
+    ovalDrawable?.setTintList(tint)
   }
 }

@@ -5,12 +5,12 @@ import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.NonNull
+import androidx.core.view.children
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.NORMAL
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.addUpdateLister
@@ -80,7 +80,9 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
         selectedItemPosition = newPosition
 
-        onNavigationMenuItemSelectedListener?.onNavigationItemSelected(items[selectedItemPosition])
+        onNavigationMenuItemSelectedListeners.forEach {
+          it.onNavigationItemSelected(items[selectedItemPosition])
+        }
       }
     }
 
@@ -89,8 +91,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       onNavigationClickListener =
         this@AnimationSwitchingBottomNavigationLayout.onNavigationClickListener
     }
-  private val selectedButton =
-    AnimationSwitchingBottomNavigationSelectedButton(context, attrs)
+  private lateinit var selectedItemLayout: FrameLayout
 
   private var navigationViewHeight =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
@@ -101,7 +102,6 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private var selectedBottomMargin =
     resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_default_bottom_margin)
 
-  private var buttonBackgroundColor: ColorStateList? = null
   private var selectedItemPosition: Int = 0
   private var animator: Animator? = null
 
@@ -111,45 +111,51 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private val items = mutableListOf<NavigationMenuItem>()
 
   var onNavigationMenuItemReselectedListener: OnNavigationMenuItemReselectedListener? = null
-  var onNavigationMenuItemSelectedListener: OnNavigationMenuItemSelectedListener? = null
+  var onNavigationMenuItemSelectedListeners: MutableList<OnNavigationMenuItemSelectedListener> =
+    mutableListOf()
 
   init {
+    val selectedButton = AnimationSwitchingBottomNavigationSelectedButton(context, attrs)
+
     attrs?.let {
       val a = context.obtainStyledAttributes(
         it,
         R.styleable.AnimationSwitchingBottomNavigationLayout
       )
-      buttonBackgroundColor =
-        a.getColorStateList(R.styleable.AnimationSwitchingBottomNavigationLayout_buttonBackgroundColor)
       navigationViewHeight =
         a.getDimensionPixelSize(
           R.styleable.AnimationSwitchingBottomNavigationLayout_navigationViewHeight,
           resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_default_height)
         )
-      val selectedButtonSize = SelectedButtonSize.fromIndex(
+      selectedButton.setOvalTintList(
+        a.getColorStateList(
+          R.styleable.AnimationSwitchingBottomNavigationLayout_selectedButtonBackgroundColor
+        )
+      )
+      SelectedButtonSize.fromIndex(
         a.getInt(
           R.styleable.AnimationSwitchingBottomNavigationLayout_selectedButtonSize,
           0
         )
-      )
-      when (selectedButtonSize) {
-        NORMAL -> {
-          selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
-          selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
-        }
-        SMALL -> {
-          selectedWidth =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_width)
-          selectedHeight =
-            resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_height)
+      ).also { selectedButtonSize ->
+        when (selectedButtonSize) {
+          NORMAL -> {
+            selectedWidth =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_width)
+            selectedHeight =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_normal_height)
+          }
+          SMALL -> {
+            selectedWidth =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_width)
+            selectedHeight =
+              resources.getDimensionPixelSize(R.dimen.animation_switching_bottom_navigation_selected_small_height)
+          }
         }
       }
       a.recycle()
     }
-
-    selectedButton.backgroundTintList = buttonBackgroundColor
+    selectedItemLayout = selectedButton
   }
 
   // 描画順序を考慮して、XMLのパースが終わった後にNavigationViewとSelectedButtonを追加する
@@ -157,11 +163,24 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     super.onFinishInflate()
 
     if (childCount < MAX_CHILD_COUNT) {
+      // 内部に[AnimationSwitchingBottomNavigationSelectedItemLayout]があるかチェックする
+      val layout = children.firstOrNull {
+        it is AnimationSwitchingBottomNavigationSelectedItemLayout
+      } as? AnimationSwitchingBottomNavigationSelectedItemLayout
+
+      layout?.let {
+        setSelectedItemLayout(it)
+      }
+
       addView(
         navigationView,
         LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
       )
-      addView(selectedButton, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+      // デフォルトの[AnimationSwitchingBottomNavigationSelectedButton]はaddViewされてないのでここで追加
+      if (!children.contains(selectedItemLayout)) {
+        addView(selectedItemLayout)
+      }
     }
 
     if (childCount > MAX_CHILD_COUNT) throw IllegalStateException("This Layout can not have views more than 3.")
@@ -184,10 +203,10 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
       MeasureSpec.makeMeasureSpec(navigationViewHeight, MeasureSpec.EXACTLY)
     navigationView.measure(navigationWidthSpec, navigationHeightSpec)
 
-    // SelectedButtonのサイズを確定
+    // SelectedItemLayoutのサイズを確定
     val selectedWidthSpec = MeasureSpec.makeMeasureSpec(selectedWidth, MeasureSpec.EXACTLY)
     val selectedHeightSpec = MeasureSpec.makeMeasureSpec(selectedHeight, MeasureSpec.EXACTLY)
-    selectedButton.measure(selectedWidthSpec, selectedHeightSpec)
+    selectedItemLayout.measure(selectedWidthSpec, selectedHeightSpec)
 
     // メインコンテンツのサイズを確定
     val content = getChildAt(0)
@@ -206,18 +225,31 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     // itemViewsがない場合itemViews[0]で落ちるのでチェック
     if (navigationView.menuView.itemViews.size == 0) return
 
-    // SelectedButtonの位置を確定
-    val selectedWidth = selectedButton.measuredWidth
-    val selectedHeight = selectedButton.measuredHeight
+    // SelectedItemLayoutの位置を確定
+    val selectedWidth = selectedItemLayout.measuredWidth
+    val selectedHeight = selectedItemLayout.measuredHeight
     val itemViewWidth = navigationView.menuView.getChildAt(0).measuredWidth
     val differenceBetweenSelectedAndItem = (itemViewWidth - selectedWidth) / 2
-    selectedButton.layout(
+    selectedItemLayout.layout(
       differenceBetweenSelectedAndItem,
       measuredHeight - selectedHeight - selectedBottomMargin,
       differenceBetweenSelectedAndItem + selectedWidth,
       measuredHeight - selectedBottomMargin
     )
   }
+
+  @Suppress("unused")
+  fun setSelectedItemLayout(layout: FrameLayout) {
+    selectedItemLayout = layout
+    (layout as? OnNavigationMenuItemSelectedListener)?.let { listener ->
+      onNavigationMenuItemSelectedListeners.add(listener)
+    }
+    (layout as? OnNavigationMenuItemReselectedListener)?.let { listener ->
+      onNavigationMenuItemReselectedListener = listener
+    }
+  }
+
+  fun getSelectedItemLayout() = selectedItemLayout
 
   private fun createAnimatorFadeOutMenuItem(
     itemView: AnimationSwitchingBottomNavigationItemView
@@ -234,18 +266,19 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   }
 
   private fun createAnimatorMoveToSelectedPosition(
-    selectedButton: AnimationSwitchingBottomNavigationSelectedButton,
+    selectedItemLayout: FrameLayout,
     menuView: AnimationSwitchingBottomNavigationMenuView,
     newPosition: Int
   ): Animator {
     // animate animationSwitchingBottomNavigationSelectedButtonView
-    val selectedButtonWidth = selectedButton.measuredWidth
+    val selectedItemLayoutWidth = selectedItemLayout.measuredWidth
     val itemViewWidth = menuView.getChildAt(newPosition).measuredWidth
-    val startX = selectedButton.x
-    val targetX = menuView.getChildAt(newPosition).x + (itemViewWidth - selectedButtonWidth) / 2
+    val startX = selectedItemLayout.x
+    val targetX = menuView.getChildAt(newPosition).x + (itemViewWidth - selectedItemLayoutWidth) / 2
 
-    return selectedButton.animatorX(startX, targetX)
+    return selectedItemLayout.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
+      //TODO: animにズレが発生しているのでここはいらない
       .setStartDelayExt(SLIDE_ANIMATION_START_DELAY)
   }
 
@@ -266,11 +299,13 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
   fun getItems() = items
 
+  @Suppress("unused")
   fun addNavigationMenuItem(item: NavigationMenuItem) {
     items.add(item)
     dispatchItem()
   }
 
+  @Suppress("unused")
   fun addNavigationMenuItem(items: List<NavigationMenuItem>) {
     this.items.addAll(items)
     dispatchItem()
@@ -302,7 +337,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         createAnimatorFadeInMenuItem(fromItemView).setStartDelayExt(FADE_ANIMATION_START_DELAY)
       ),
       AnimatorSet().playTogetherExt(
-        createAnimatorMoveToSelectedPosition(selectedButton, menuView, position),
+        createAnimatorMoveToSelectedPosition(selectedItemLayout, menuView, position),
         createAnimatorMoveToSelectedBackgroundPosition(
           selectedBackgroundView,
           menuView,

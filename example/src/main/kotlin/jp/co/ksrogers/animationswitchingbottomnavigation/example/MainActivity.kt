@@ -1,44 +1,28 @@
 package jp.co.ksrogers.animationswitchingbottomnavigation.example
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
-import kotlinx.android.synthetic.main.activity_sample.*
+import kotlinx.android.synthetic.main.activity_main.*
 
+/**
+ * Sample code for implement navigation with library.
+ *
+ * Use [jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationSelectedButton] in this class.
+ *
+ * It is generated automatically by [jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout].
+ */
 class MainActivity : AppCompatActivity() {
 
   private lateinit var navController: NavController
 
-  val onNavigationItemSelectedListener =
-    object : AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener {
-      override fun onNavigationItemSelected(item: NavigationMenuItem) {
-        when (item.id) {
-          R.id.animation_switching_botttom_navigation_sample_id_1 -> {
-            navController.navigate(R.id.fragment_sample1)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_2 -> {
-            navController.navigate(R.id.fragment_sample2)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_3 -> {
-            navController.navigate(R.id.fragment_sample3)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_4 -> {
-            navController.navigate(R.id.fragment_sample4)
-          }
-          R.id.animation_switching_botttom_navigation_sample_id_5 -> {
-            navController.navigate(R.id.fragment_sample5)
-          }
-        }
-      }
-    }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_sample)
+    setContentView(R.layout.activity_main)
     layout_animation_switching_bottom_navigation.apply {
       addNavigationMenuItem(
         listOf(
@@ -72,5 +56,12 @@ class MainActivity : AppCompatActivity() {
     }
     navController = findNavController(R.id.nav_fragment_main)
     layout_animation_switching_bottom_navigation.setupWithNavController(navController)
+
+    // デフォルトで設定されるボタンに対してlistener設定などを行う
+    layout_animation_switching_bottom_navigation.getSelectedItemLayout().apply {
+      setOnClickListener {
+        Toast.makeText(this@MainActivity, "button clicked", Toast.LENGTH_SHORT).show()
+      }
+    }
   }
 }

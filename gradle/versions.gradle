@@ -31,6 +31,8 @@ versions.material = '1.1.0-alpha03'
 versions.navigation = '1.0.0-alpha08'
 versions.browser = '1.0.0'
 versions.test = '1.0.0'
+// lottie
+versions.lottie = "3.0.0-beta2"
 // debug
 versions.hyperion = '0.9.24'
 versions.timber = '4.7.1'
@@ -105,5 +107,9 @@ hyperion.shared_preference = "com.willowtreeapps.hyperion:hyperion-shared-prefer
 hyperion.geiger_counter = "com.willowtreeapps.hyperion:hyperion-geiger-counter:$versions.hyperion"
 hyperion.release = "com.willowtreeapps.hyperion:hyperion-core-no-op:$versions.hyperion"
 deps.hyperion = hyperion
+
+def lottie = [:]
+lottie.core = "com.airbnb.android:lottie:$versions.lottie"
+deps.lottie = lottie
 
 ext.deps = deps

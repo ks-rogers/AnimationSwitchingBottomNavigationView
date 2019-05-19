@@ -40,6 +40,9 @@ dependencies {
   implementation deps.androidx.navigation.fragment_ltx
   implementation deps.androidx.navigation.ui
   implementation deps.androidx.navigation.ui_ktx
+
+  // lottie
+  implementation deps.lottie.core
 }
 
 // For Debugging

@@ -15,11 +15,11 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
 import java.lang.ref.WeakReference
 
 fun AnimationSwitchingBottomNavigationLayout.setupWithNavController(navController: NavController) {
-  this.onNavigationMenuItemSelectedListener = object : OnNavigationMenuItemSelectedListener {
+  this.onNavigationMenuItemSelectedListeners.add(object : OnNavigationMenuItemSelectedListener {
     override fun onNavigationItemSelected(item: NavigationMenuItem) {
       onNavDestinationSelected(item, navController, true)
     }
-  }
+  })
 
   val weakNavLayout = WeakReference<AnimationSwitchingBottomNavigationLayout>(this)
   navController.addOnDestinationChangedListener(object : OnDestinationChangedListener {
