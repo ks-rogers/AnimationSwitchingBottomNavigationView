@@ -25,8 +25,13 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setListener
 import jp.co.ksrogers.animationswitchingbottomnavigation.ext.setStartDelayExt
 
 /**
- * 最終的にライブラリとして開発者に提供されるLayout。
- * 内部的に [AnimationSwitchingBottomNavigationView], [AnimationSwitchingBottomNavigationSelectedButton]を生成し、メインコンテンツと両立させる。
+ *
+ * A Layout to provide bottom navigation w/ animation-able button and menu items.
+ *
+ * This layout has several views.
+ *  - [AnimationSwitchingBottomNavigationView]
+ *  - [AnimationSwitchingBottomNavigationSelectedButton]
+ *    - If you want to customize button, you can use [AnimationSwitchingBottomNavigationSelectedItemLayout]
  *
  */
 class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
@@ -35,7 +40,11 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 ) : FrameLayout(context, attrs) {
 
   /**
-   * XMLで使用するAttributeのためのEnum Class
+   *
+   * Enum class for specify size of [AnimationSwitchingBottomNavigationSelectedButton] or [AnimationSwitchingBottomNavigationSelectedItemLayout] from layout XML.
+   *
+   * <p> For use in layout XML only.
+   *
    */
   internal enum class SelectedButtonSize {
     NORMAL,
@@ -51,7 +60,13 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   }
 
   /**
-   * 外部からセットするためのdata class
+   *
+   * Data class for set navigation menu item from outside.
+   *
+   * @param id An id of menu item.
+   * @param iconDrawableRes A resource id of menu item icon.
+   * @param selectedBackgroundColor A single color value in the form 0xAARRGGBB.
+   *
    */
   data class NavigationMenuItem(
     val id: Int,
@@ -67,7 +82,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     const val FADE_ANIMATION_START_DELAY = 150L
   }
 
-  // NavigationViewでイベントが発火されたときに呼び出されるリスナー
+  // Listener that called when event fired by [AnimationSwitchingBottomNavigationView]
   private val onNavigationClickListener =
     object : AnimationSwitchingBottomNavigationView.OnNavigationClickListener {
       override fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int) {
@@ -105,9 +120,6 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
   private var selectedItemPosition: Int = 0
   private var animator: Animator? = null
 
-  /**
-   * 外部からセットする
-   */
   private val items = mutableListOf<NavigationMenuItem>()
 
   var onNavigationMenuItemReselectedListener: OnNavigationMenuItemReselectedListener? = null
@@ -158,12 +170,19 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     selectedItemLayout = selectedButton
   }
 
-  // 描画順序を考慮して、XMLのパースが終わった後にNavigationViewとSelectedButtonを追加する
+  /**
+   *
+   * Add [AnimationSwitchingBottomNavigationView] and [AnimationSwitchingBottomNavigationSelectedButton]
+   * after finished parse layout XML because considering drawing order.
+   *
+   * In this method, if this layout has [AnimationSwitchingBottomNavigationSelectedItemLayout],
+   * replace it and [AnimationSwitchingBottomNavigationSelectedButton].
+   *
+   */
   override fun onFinishInflate() {
     super.onFinishInflate()
 
     if (childCount < MAX_CHILD_COUNT) {
-      // 内部に[AnimationSwitchingBottomNavigationSelectedItemLayout]があるかチェックする
       val layout = children.firstOrNull {
         it is AnimationSwitchingBottomNavigationSelectedItemLayout
       } as? AnimationSwitchingBottomNavigationSelectedItemLayout
@@ -177,7 +196,7 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
         LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
       )
 
-      // デフォルトの[AnimationSwitchingBottomNavigationSelectedButton]はaddViewされてないのでここで追加
+      // default selectedItemLayout may addView() not yet, so do it here.
       if (!children.contains(selectedItemLayout)) {
         addView(selectedItemLayout)
       }
@@ -186,29 +205,33 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     if (childCount > MAX_CHILD_COUNT) throw IllegalStateException("This Layout can not have views more than 3.")
   }
 
+  /**
+   *
+   * Adjust each child views size dynamically considering w/ navigation layout size.
+   *
+   */
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     val layoutWidthMode = MeasureSpec.getMode(widthMeasureSpec)
     val layoutWidth = MeasureSpec.getSize(widthMeasureSpec)
     val layoutHeightMode = MeasureSpec.getMode(heightMeasureSpec)
     val layoutHeight = MeasureSpec.getSize(heightMeasureSpec)
 
-    // modeがEXACTLYであるかチェック
     if (layoutWidthMode != MeasureSpec.EXACTLY || layoutHeightMode != MeasureSpec.EXACTLY) {
       throw IllegalStateException("Please set 'match_parent' to AnimationSwitchingBottomNavigationLayout's width and height.")
     }
 
-    // NavigationViewのサイズを確定
+    // adjust size of NavigationView
     val navigationWidthSpec = MeasureSpec.makeMeasureSpec(layoutWidth, MeasureSpec.AT_MOST)
     val navigationHeightSpec =
       MeasureSpec.makeMeasureSpec(navigationViewHeight, MeasureSpec.EXACTLY)
     navigationView.measure(navigationWidthSpec, navigationHeightSpec)
 
-    // SelectedItemLayoutのサイズを確定
+    // adjust size of SelectedItemLayout
     val selectedWidthSpec = MeasureSpec.makeMeasureSpec(selectedWidth, MeasureSpec.EXACTLY)
     val selectedHeightSpec = MeasureSpec.makeMeasureSpec(selectedHeight, MeasureSpec.EXACTLY)
     selectedItemLayout.measure(selectedWidthSpec, selectedHeightSpec)
 
-    // メインコンテンツのサイズを確定
+    // adjust size of main contents (that not generated by this library)
     val content = getChildAt(0)
     val contentWidthSpec = MeasureSpec.makeMeasureSpec(layoutWidth, MeasureSpec.EXACTLY)
     val contentHeightSpec = MeasureSpec.makeMeasureSpec(
@@ -220,12 +243,17 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     setMeasuredDimension(layoutWidth, layoutHeight)
   }
 
+  /**
+   *
+   * Adjust each child views position dynamically considering w/ navigation layout size.
+   *
+   */
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
-    // itemViewsがない場合itemViews[0]で落ちるのでチェック
+    // check itemViews has children for prevent crash
     if (navigationView.menuView.itemViews.size == 0) return
 
-    // SelectedItemLayoutの位置を確定
+    // adjust position of SelectedItemLayout
     val selectedWidth = selectedItemLayout.measuredWidth
     val selectedHeight = selectedItemLayout.measuredHeight
     val itemViewWidth = navigationView.menuView.getChildAt(0).measuredWidth
@@ -238,6 +266,20 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     )
   }
 
+  /**
+   *
+   * Set layout for navigation button that indicate selected menu item.
+   *
+   * This method doesn't need to use because [AnimationSwitchingBottomNavigationLayout] has a
+   * [AnimationSwitchingBottomNavigationSelectedButton] by default.
+   *
+   * If you customize [AnimationSwitchingBottomNavigationSelectedButton],
+   * we recommend to use [AnimationSwitchingBottomNavigationSelectedItemLayout] and implement at the
+   * layout XML.
+   *
+   * @param layout layout of navigation button that extends [FrameLayout]
+   *
+   */
   @Suppress("unused")
   fun setSelectedItemLayout(layout: FrameLayout) {
     selectedItemLayout = layout
@@ -299,12 +341,38 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
   fun getItems() = items
 
+  /**
+   *
+   * Add menu item to end of menu list.
+   *
+   * ```
+   * before: {A, B, C}
+   * param: D
+   * after: {A, B, C, D}
+   * ```
+   *
+   * @param item menu item
+   *
+   */
   @Suppress("unused")
   fun addNavigationMenuItem(item: NavigationMenuItem) {
     items.add(item)
     dispatchItem()
   }
 
+  /**
+   *
+   * Add menu items to end of menu list.
+   *
+   * ```
+   * before: {A, B, C}
+   * param: {X, Y, Z}
+   * after: {A, B, C, X, Y, Z}
+   * ```
+   *
+   * @param items list of menu items
+   *
+   */
   @Suppress("unused")
   fun addNavigationMenuItem(items: List<NavigationMenuItem>) {
     this.items.addAll(items)
@@ -363,6 +431,13 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     animator?.start()
   }
 
+  /**
+   *
+   * Change selected menu item with position.
+   *
+   * @param position menu item position. Value should be in range of 0 to item size.
+   *
+   */
   fun setSelectedPosition(position: Int) {
     if (selectedItemPosition == position) {
       return
@@ -371,10 +446,20 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
     selectedItemPosition = position
   }
 
+  /**
+   *
+   * Listener that call when selected menu item clicked repeatedly.
+   *
+   */
   interface OnNavigationMenuItemReselectedListener {
     fun onNavigationItemReselected(@NonNull item: NavigationMenuItem)
   }
 
+  /**
+   *
+   * Listener that call when menu item clicked.
+   *
+   */
   interface OnNavigationMenuItemSelectedListener {
     fun onNavigationItemSelected(@NonNull item: NavigationMenuItem)
   }
