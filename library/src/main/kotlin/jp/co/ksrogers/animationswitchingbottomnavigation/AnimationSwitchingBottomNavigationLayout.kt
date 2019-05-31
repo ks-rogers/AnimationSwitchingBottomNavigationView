@@ -278,8 +278,6 @@ class AnimationSwitchingBottomNavigationLayout @JvmOverloads constructor(
 
     return selectedItemLayout.animatorX(startX, targetX)
       .setDurationExt(SLIDE_ANIMATION_DURATION)
-      //TODO: animにズレが発生しているのでここはいらない
-      .setStartDelayExt(SLIDE_ANIMATION_START_DELAY)
   }
 
   private fun createAnimatorMoveToSelectedBackgroundPosition(
