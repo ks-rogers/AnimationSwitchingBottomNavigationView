@@ -10,7 +10,8 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener
 
 /**
- * [AnimationSwitchingBottomNavigationLayout]において、選択中のmenu itemの位置に表示されるLayout
+ * A layout for indicating selected menu in [AnimationSwitchingBottomNavigationLayout].
+ * This layout presumed for use to customize to indicate selected menu item instead of default layout.
  */
 class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constructor(
   context: Context,
@@ -52,23 +53,41 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
       a.recycle()
     }
 
-    // NavigationLayoutの他のviewの下に潜ってしまうのを防止するために必要
+    // Need lift up because disappeared partially this view by other views in navigation layout.
     elevation = 1f
   }
 
+  /**
+   * Listener that call when menu item clicked.
+   */
   override fun onNavigationItemSelected(item: NavigationMenuItem) {
     onNavigationMenuItemSelectedListener?.onNavigationItemSelected(item)
   }
 
+  /**
+   * Listener that call when selected menu item clicked repeatedly.
+   */
   override fun onNavigationItemReselected(item: NavigationMenuItem) {
     onNavigationMenuItemReselectedListener?.onNavigationItemReselected(item)
   }
 
+  /**
+   * Set listener for detect menu item click.
+   *
+   * @param l listener called when click menu item.
+   */
   @Suppress("unused")
   fun setOnNavigationItemSelectedListener(l: OnNavigationMenuItemSelectedListener) {
     onNavigationMenuItemSelectedListener = l
   }
 
+  /**
+   * Set listener for detect menu item click.
+   *
+   * This method used when you writing with SAM conversion in Kotlin.
+   *
+   * @param l listener called when click menu item.
+   */
   @Suppress("unused")
   fun setOnNavigationItemSelectedListener(l: (NavigationMenuItem) -> Unit) {
     setOnNavigationItemSelectedListener(
@@ -80,11 +99,23 @@ class AnimationSwitchingBottomNavigationSelectedItemLayout @JvmOverloads constru
     )
   }
 
+  /**
+   * Set listener for detect menu item clicked repeatedly.
+   *
+   * @param l listener called when click menu item.
+   */
   @Suppress("unused")
   fun setOnNavigationItemReselectedListener(l: OnNavigationMenuItemReselectedListener) {
     onNavigationMenuItemReselectedListener = l
   }
 
+  /**
+   * Set listener for detect menu item clicked repeatedly.
+   *
+   * This method used when you writing with SAM conversion in Kotlin.
+   *
+   * @param l listener called when click menu item.
+   */
   @Suppress("unused")
   fun setOnNavigationItemReselectedListener(l: (NavigationMenuItem) -> Unit) {
     setOnNavigationItemReselectedListener(

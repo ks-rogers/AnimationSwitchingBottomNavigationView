@@ -15,7 +15,10 @@ import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBotto
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.SelectedButtonSize.SMALL
 
 /**
- * 選択状態のボタンの後ろの矩形を持ったView
+ * A view with a convex shape to use in background of selected menu item.
+ *
+ * @see [AnimationSwitchingBottomNavigationLayout]
+ * @see [AnimationSwitchingBottomNavigationView]
  */
 @RestrictTo(LIBRARY_GROUP)
 @SuppressLint("CustomViewStyleable")
@@ -91,6 +94,11 @@ class AnimationSwitchingBottomNavigationSelectedBackgroundView @JvmOverloads con
     setMeasuredDimension(width, height)
   }
 
+  /**
+   * Drawing convex shape here.
+   *
+   * Use cubic Bezier curve with three coordinates to calculate curve path.
+   */
   override fun onDraw(canvas: Canvas) {
     super.onDraw(canvas)
     val maxWidth = measuredWidth.toFloat()

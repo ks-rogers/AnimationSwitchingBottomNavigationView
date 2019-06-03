@@ -10,6 +10,13 @@ import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 
+/**
+ * A layout for indicating selected menu in [AnimationSwitchingBottomNavigationLayout].
+ * This layout contains just single ImageView.
+ *
+ * If you want to customize yourself instead of this layout, you can use
+ * [AnimationSwitchingBottomNavigationSelectedItemLayout].
+ */
 @RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor(
   context: Context,
@@ -53,6 +60,11 @@ class AnimationSwitchingBottomNavigationSelectedButton @JvmOverloads constructor
     ovalDrawable?.setTintList(tint)
   }
 
+  /**
+   * Tinting button's background with [ColorStateList].
+   *
+   * @param tint Tinting background drawable with this [ColorStateList]. Or set null to clear tinting.
+   */
   fun setOvalTintList(tint: ColorStateList?) {
     ovalDrawable?.setTintList(tint)
   }

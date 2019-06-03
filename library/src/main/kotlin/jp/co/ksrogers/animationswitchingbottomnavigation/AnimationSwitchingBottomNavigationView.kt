@@ -8,6 +8,11 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
+/**
+ * A layout that contains [AnimationSwitchingBottomNavigationMenuView] and
+ * [AnimationSwitchingBottomNavigationSelectedBackgroundView].
+ * This view has role of adjust size and position each of children.
+ */
 @RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
   context: Context,
@@ -57,13 +62,13 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     val width = MeasureSpec.getSize(widthMeasureSpec)
     val height = MeasureSpec.getSize(heightMeasureSpec)
 
-    // MenuViewのサイズを決定する
+    // adjust size of menuView
     menuView.measure(
       MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
       MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
     )
 
-    // SelectedBackgroundViewのサイズを決定する
+    // adjust size of selectedBackgroundView
     val selectedBackgroundHeight = menuView.measuredHeight
     selectedBackgroundView.measure(
       MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
@@ -75,10 +80,10 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
 
   override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
     super.onLayout(changed, left, top, right, bottom)
-    // itemViewsがない場合itemViews[0]で落ちるのでチェック
+    // check itemViews has children for prevent crash
     if (menuView.childCount == 0) return
 
-    // SelectedBackgroundViewの位置を確定
+    // adjust position of selectedBackgroundView
     val selectedBackgroundWidth = selectedBackgroundView.measuredWidth
     val selectedBackgroundHeight = selectedBackgroundView.measuredHeight
     val itemViewWidth = menuView.getChildAt(0).measuredWidth
@@ -91,6 +96,11 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     )
   }
 
+  /**
+   * Add menu items into [menuView].
+   *
+   * @param menuItemList list of menu items you want to add.
+   */
   fun addNavigationMenuItem(menuItemList: List<NavigationMenuItem>) {
     menuView.addNavigationItems(menuItemList)
 
@@ -99,6 +109,9 @@ class AnimationSwitchingBottomNavigationView @JvmOverloads constructor(
     }
   }
 
+  /**
+   * Listener that call when menu item clicked.
+   */
   interface OnNavigationClickListener {
     fun onClick(navigationItemItem: NavigationMenuItem, newPosition: Int)
   }

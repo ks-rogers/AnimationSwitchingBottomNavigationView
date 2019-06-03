@@ -10,6 +10,14 @@ import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
+/**
+ *
+ * A layout of item in bottom navigation.
+ *
+ * This layout is very simple, it has only one ImageView.
+ * Use drawable resource of [NavigationMenuItem] passed from [initialize] for internal ImageView.
+ *
+ */
 @RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
   context: Context,
@@ -29,6 +37,14 @@ class AnimationSwitchingBottomNavigationItemView @JvmOverloads constructor(
     icon = findViewById(R.id.icon)
   }
 
+  /**
+   *
+   * Setup with [NavigationMenuItem].
+   * In this method, keep argument's menu item internal and set menu icon with it.
+   *
+   * @param item menu item corresponding to this layout.
+   *
+   */
   fun initialize(item: NavigationMenuItem) {
     this.item = item
     setIcon(resources.getDrawable(item.iconDrawableRes, null))

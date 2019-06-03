@@ -9,6 +9,11 @@ import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.core.view.ViewCompat
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 
+/**
+ * A layout contains all menu items at the navigation.
+ * This layout has role of detecting menu item click and notify to
+ * [AnimationSwitchingBottomNavigationView].
+ */
 @RestrictTo(LIBRARY_GROUP)
 class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
   context: Context,
@@ -19,7 +24,7 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
     val newItemView = v as AnimationSwitchingBottomNavigationItemView
     var newSelectedItemPosition = 0
 
-    // セレクトされたpositionを取得する
+    // calculate position of selected
     run loop@{
       itemViews.map { it.item }.forEachIndexed { index, item ->
         if (item.id == newItemView.item.id) {
@@ -44,6 +49,9 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
 
   private var items = mutableListOf<NavigationMenuItem>()
 
+  /**
+   * Add menu item and rebuild layout.
+   */
   fun addNavigationItems(items: List<NavigationMenuItem>) {
     this.items.addAll(items)
     buildMenuItems()
@@ -105,6 +113,9 @@ class AnimationSwitchingBottomNavigationMenuView @JvmOverloads constructor(
     }
   }
 
+  /**
+   * Listener to notify clicked menu item view and position.
+   */
   interface OnMenuItemClickListener {
     fun onClick(
       menuView: AnimationSwitchingBottomNavigationMenuView,
