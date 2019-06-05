@@ -1,7 +1,5 @@
 # AnimationSwitchingBottomNavigationView
 
-// status badge here
-
 AnimationSwitchingNavigationBar is provide layout like a Bottom Navigation View.
 
 ### Animation-able
@@ -140,11 +138,11 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-## Sample
+## Example
 
-To run the sample application of use this, clone this repository and open on Android Studio.
+To run the example of use this, clone this repository and open on Android Studio.
 
-Sample application's codes placed in `example` module.
+Example codes placed in `example` module.
 
 ## Contributing
 
