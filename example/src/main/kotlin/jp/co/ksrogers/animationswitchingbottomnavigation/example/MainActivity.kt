@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
+import jp.co.ksrogers.animationswitchingbottomnavigation.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**

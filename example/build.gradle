@@ -28,7 +28,8 @@ android {
 }
 
 dependencies {
-  implementation project(':library')
+  implementation project(':library:core')
+  implementation project(':library:navigationsupport')
 
   implementation deps.kotlin.jdk
 
@@ -37,7 +38,7 @@ dependencies {
   implementation deps.androidx.core_ktx
 
   implementation deps.androidx.navigation.fragment
-  implementation deps.androidx.navigation.fragment_ltx
+  implementation deps.androidx.navigation.fragment_ktx
   implementation deps.androidx.navigation.ui
   implementation deps.androidx.navigation.ui_ktx
 

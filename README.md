@@ -42,7 +42,7 @@ Use AnimationSwitchingBottomNavigationLayout as root layout.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
+<AnimationSwitchingBottomNavigationLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/layout_animation_switching_bottom_navigation"
@@ -55,14 +55,14 @@ Use AnimationSwitchingBottomNavigationLayout as root layout.
   
   ...
   
-</jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout>
+</AnimationSwitchingBottomNavigationLayout>
 ```
 
 If you want to coordinate with Android Jetpack Navigation, add NavHostFragment as a child element of AnimationSwitchingBottomNavigationLayout.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
+<AnimationSwitchingBottomNavigationLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/layout_animation_switching_bottom_navigation"
@@ -90,7 +90,7 @@ If you want to coordinate with Android Jetpack Navigation, add NavHostFragment a
       />
 
   </LinearLayout>
-</jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout>
+</AnimationSwitchingBottomNavigationLayout>
 ```
 
 You can customize the layout from XML.

@@ -1,4 +1,4 @@
-package jp.co.ksrogers.animationswitchingbottomnavigation.example
+package jp.co.ksrogers.animationswitchingbottomnavigation
 
 import android.os.Bundle
 import androidx.annotation.IdRes
@@ -9,7 +9,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph
 import androidx.navigation.NavOptions
 import androidx.navigation.ui.R
-import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener
 import java.lang.ref.WeakReference

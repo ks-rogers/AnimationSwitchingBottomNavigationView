@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from: '../../gradle/ktlint.gradle'
+
+android {
+  compileSdkVersion build_config.compile_sdk
+
+  defaultConfig {
+    minSdkVersion build_config.min_sdk
+    targetSdkVersion build_config.target_sdk
+    versionCode build_config.version_code
+    versionName build_config.version_name
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+}
+
+dependencies {
+  implementation deps.kotlin.jdk
+  implementation deps.androidx.core_ktx
+}
+
+// For Testing
+dependencies {
+  implementation project(':library:core')
+
+  implementation deps.androidx.navigation.fragment
+  implementation deps.androidx.navigation.ui
+
+  testImplementation deps.androidx.test.core
+  testImplementation deps.androidx.test.junit
+  testImplementation deps.androidx.test.truth
+  testImplementation deps.androidx.test.espresso_core
+  testImplementation deps.androidx.test.espresso_intents
+
+  testImplementation deps.robolectric
+}
