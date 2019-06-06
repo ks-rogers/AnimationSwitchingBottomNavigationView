@@ -10,7 +10,7 @@ android {
     minSdkVersion build_config.min_sdk
     targetSdkVersion build_config.target_sdk
     versionCode build_config.version_code
-    versionName build_config.version_name
+    versionName VERSION_NAME
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
@@ -38,12 +38,26 @@ dependencies {
 
   implementation deps.androidx.navigation.fragment
   implementation deps.androidx.navigation.ui
-
-  testImplementation deps.androidx.test.core
-  testImplementation deps.androidx.test.junit
-  testImplementation deps.androidx.test.truth
-  testImplementation deps.androidx.test.espresso_core
-  testImplementation deps.androidx.test.espresso_intents
-
-  testImplementation deps.robolectric
 }
+
+ext {
+  bintrayRepo = 'maven'
+  bintrayName = 'AnimationSwitchingBottomNavigationView-Navigation-Support'
+  bintrayUserOrg = 'ks-rogers'
+  publishedGroupId = 'jp.co.ksrogers.animationswitchingbottomnavigation'
+  libraryName = 'navigation-support'
+  artifact = 'navigation-support'
+  libraryDescription = 'AnimationSwitchinBottomNavigationView is provide layout like a Bottom Navigation View.'
+  siteUrl = 'https://github.com/ks-rogers/AnimationSwitchingBottomNavigationView'
+  gitUrl = 'https://github.com/ks-rogers/AnimationSwitchingBottomNavigationView.git'
+  issueUrl = 'https://github.com/ks-rogers/AnimationSwitchingBottomNavigationView/issues'
+  libraryVersion = VERSION_NAME
+  developerId = 'ks-rogers'
+  developerName = 'K.S.Rogers'
+  developerEmail = 'info@ks-rogers.co.jp'
+  licenseName = 'MIT license'
+  licenseUrl = 'https://opensource.org/licenses/MIT'
+  allLicenses = ["MIT"]
+}
+
+apply from: '../../gradle/bintray.gradle'

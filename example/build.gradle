@@ -30,7 +30,6 @@ android {
 dependencies {
   implementation project(':library:core')
   implementation project(':library:navigationsupport')
-
   implementation deps.kotlin.jdk
 
   implementation deps.androidx.app_compat

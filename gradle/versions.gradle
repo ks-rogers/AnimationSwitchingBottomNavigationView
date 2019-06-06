@@ -1,6 +1,5 @@
 def build_config = [:]
 build_config.version_code = 1
-build_config.version_name = '1.0.0'
 build_config.compile_sdk = 28
 build_config.min_sdk = 21
 build_config.target_sdk = 28
@@ -36,18 +35,6 @@ versions.lottie = "3.0.0-beta2"
 // debug
 versions.hyperion = '0.9.24'
 versions.timber = '4.7.1'
-// ci
-versions.ktlint = '0.29.0'
-versions.jacoco = '0.8.1'
-// test
-versions.runner = '1.1.0'
-versions.androidx_junit = '1.0.0'
-versions.truth = '1.0.0'
-versions.espresso = '3.1.0'
-versions.robolectric = '4.0.2'
-versions.mockk = '1.8.13.kotlin13'
-versions.byte_buddy = '1.9.4'
-versions.mock_web_server = '3.11.0'
 ext.versions = versions
 
 def deps = [:]
@@ -76,13 +63,6 @@ androidx.browser = "androidx.browser:browser:$versions.browser"
 androidx.core_ktx = "androidx.core:core-ktx:$versions.core"
 androidx.activity_ktx = "androidx.activity:activity-ktx:$versions.activity"
 androidx.fragment_ktx = "androidx.fragment:fragment-ktx:$versions.fragment"
-androidx.test = [:]
-androidx.test.core = "androidx.test:core:$versions.test"
-androidx.test.runner = "androidx.test:runner:$versions.runner"
-androidx.test.junit = "androidx.test.ext:junit:$versions.androidx_junit"
-androidx.test.truth = "androidx.test.ext:truth:$versions.truth"
-androidx.test.espresso_core = "androidx.test.espresso:espresso-core:$versions.espresso"
-androidx.test.espresso_intents = "androidx.test.espresso:espresso-core:$versions.espresso"
 deps.androidx = androidx
 
 def google = [:]
@@ -92,10 +72,6 @@ deps.google = google
 def jakewharton = [:]
 jakewharton.timber = "com.jakewharton.timber:timber:$versions.timber"
 deps.jakewharton = jakewharton
-
-deps.robolectric = "org.robolectric:robolectric:$versions.robolectric"
-deps.mockk = "io.mockk:mockk:$versions.mockk"
-deps.byte_buddy_agent = "net.bytebuddy:byte-buddy-agent:$versions.byte_buddy"
 
 def hyperion = [:]
 hyperion.core = "com.willowtreeapps.hyperion:hyperion-core:$versions.hyperion"
