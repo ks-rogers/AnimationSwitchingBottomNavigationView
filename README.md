@@ -2,6 +2,8 @@
 
 AnimationSwitchingNavigationBar is provide layout like a Bottom Navigation View.
 
+This layout provides menu item animation with no difficult settings.
+
 ### Animation-able
 
 Difference with Bottom Navitaion View is adopted animation-able menu item and selected menu item indicator.
