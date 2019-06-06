@@ -1,8 +1,12 @@
 # AnimationSwitchingBottomNavigationView
 
-AnimationSwitchingNavigationBar is provide layout like a Bottom Navigation View.
+AnimationSwitchingNavigationBar is provide layout like a Bottom Navigation View. This project is inspired by [the dribble project](https://dribbble.com/shots/6044647-Tab-Bar-Animation-nr-3).
+
+![alt text](https://github.com/ks-rogers/Assets/blob/master/AnimationSwitchingTabBar/demo.gif)
 
 This layout provides menu item animation with no difficult settings.
+
+iOS: https://github.com/ks-rogers/AnimationSwitchingTabBar
 
 ### Animation-able
 
