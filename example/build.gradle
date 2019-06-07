@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-  implementation project(':library:core')
-  implementation project(':library:navigationsupport')
+  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:core:1.0.1'
+  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:navigation-support:1.0.1'
   implementation deps.kotlin.jdk
 
   implementation deps.androidx.app_compat
