@@ -168,6 +168,10 @@ If you fix a bug, please check below.
 
 ## Change Log
 
+### Version 1.0.2
+
+Fix `navigation-support` package name.
+
 ### Version 1.0.1
 
 Fix `navigation-support` dependencies.
