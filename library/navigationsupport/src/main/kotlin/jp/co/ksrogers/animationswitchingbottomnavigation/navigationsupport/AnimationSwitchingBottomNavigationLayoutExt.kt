@@ -1,4 +1,4 @@
-package jp.co.ksrogers.animationswitchingbottomnavigation
+package jp.co.ksrogers.animationswitchingbottomnavigation.navigationsupport
 
 import android.os.Bundle
 import androidx.annotation.IdRes
@@ -9,6 +9,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph
 import androidx.navigation.NavOptions
 import androidx.navigation.ui.R
+import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.OnNavigationMenuItemSelectedListener
 import java.lang.ref.WeakReference
@@ -16,7 +17,11 @@ import java.lang.ref.WeakReference
 fun AnimationSwitchingBottomNavigationLayout.setupWithNavController(navController: NavController) {
   this.onNavigationMenuItemSelectedListeners.add(object : OnNavigationMenuItemSelectedListener {
     override fun onNavigationItemSelected(item: NavigationMenuItem) {
-      onNavDestinationSelected(item, navController, true)
+      onNavDestinationSelected(
+        item,
+        navController,
+        true
+      )
     }
   })
 
@@ -34,7 +39,11 @@ fun AnimationSwitchingBottomNavigationLayout.setupWithNavController(navControlle
 
       val items = navLayout.getItems()
       items.forEachIndexed { index, item ->
-        if (matchDestination(destination, item.id)) {
+        if (matchDestination(
+            destination,
+            item.id
+          )
+        ) {
           navLayout.setSelectedPosition(index)
         }
       }
@@ -54,7 +63,10 @@ private fun onNavDestinationSelected(
     .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
     .setPopExitAnim(R.anim.nav_default_pop_exit_anim)
   if (popUp) {
-    builder.setPopUpTo(findStartDestination(navController.graph)!!.getId(), false)
+    builder.setPopUpTo(
+      findStartDestination(
+        navController.graph
+      )!!.getId(), false)
   }
   val options = builder.build()
   try {

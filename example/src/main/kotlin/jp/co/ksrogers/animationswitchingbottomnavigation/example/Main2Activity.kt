@@ -8,7 +8,7 @@ import androidx.navigation.findNavController
 import jp.co.ksrogers.animationswitchingbottomnavigation.AnimationSwitchingBottomNavigationLayout.NavigationMenuItem
 import jp.co.ksrogers.animationswitchingbottomnavigation.example.R.color
 import jp.co.ksrogers.animationswitchingbottomnavigation.example.R.drawable
-import jp.co.ksrogers.animationswitchingbottomnavigation.setupWithNavController
+import jp.co.ksrogers.animationswitchingbottomnavigation.navigationsupport.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main2.*
 
 /**

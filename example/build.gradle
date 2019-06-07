@@ -26,10 +26,15 @@ android {
     main.java.srcDirs += 'src/main/kotlin'
   }
 }
-
+repositories {
+  flatDir {
+    dirs 'libs'
+  }
+}
 dependencies {
-  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:core:1.0.1'
-  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:navigation-support:1.0.1'
+  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:core:1.0.2'
+  implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:navigation-support:1.0.2'
+
   implementation deps.kotlin.jdk
 
   implementation deps.androidx.app_compat
