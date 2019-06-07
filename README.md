@@ -1,5 +1,7 @@
 # AnimationSwitchingBottomNavigationView
 
+[![Android](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://img.shields.io/badge/Platform-Android-brightgreen.svg) [![Download](https://api.bintray.com/packages/ks-rogers/maven/AnimationSwitchingBottomNavigationView-Navigation-Support/images/download.svg)](https://bintray.com/ks-rogers/maven/AnimationSwitchingBottomNavigationView-Navigation-Support/) [![GitHub license](https://img.shields.io/github/license/ks-rogers/AnimationSwitchingBottomNavigationView.svg)](https://github.com/ks-rogers/AnimationSwitchingBottomNavigationView/blob/master/LICENSE) [![Twitter](https://img.shields.io/twitter/url/https/github.com/ks-rogers/AnimationSwitchingBottomNavigationView.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fks-rogers%2FAnimationSwitchingBottomNavigationView)
+
 AnimationSwitchinBottomNavigationView is provide layout like a Bottom Navigation View. This project is inspired by [the dribble project](https://dribbble.com/shots/6044647-Tab-Bar-Animation-nr-3).
 
 ![alt text](https://github.com/ks-rogers/Assets/blob/master/AnimationSwitchingTabBar/demo.gif)
