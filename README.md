@@ -28,14 +28,14 @@ Easily introduced into your project. Try it out!
 
 ```groovy
 dependencies {
-	implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:core:1.0.2'
+	implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:core:$latest_version'
 }
 ```
 
 AnimationSwitchingNavigationView includes a module for Android Jetpack Navigation Component.
 
 ```groovy
-implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:navigation-support:1.0.0'
+implementation 'jp.co.ksrogers.animationswitchingbottomnavigation:navigation-support:$latest_version'
 ```
 
 ## Usage
